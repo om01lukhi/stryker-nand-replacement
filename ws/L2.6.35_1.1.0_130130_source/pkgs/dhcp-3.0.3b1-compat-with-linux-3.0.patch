@@ -1,0 +1,31 @@
+From 2cb2107f4eed87941acc8865bfb632ecf0b797db Mon Sep 17 00:00:00 2001
+From: Adrian Alonso <aalonso@freescale.com>
+Date: Sat, 12 Nov 2011 14:56:18 -0600
+Subject: [PATCH] dhcp: configure compat with linux-3.0
+
+* Configure scripts fails checking host kernel version
+  since only checks for 2.x versions, fix check for
+  kernels 3.x
+
+Signed-off-by: Adrian Alonso <aalonso@freescale.com>
+---
+ configure |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+diff --git a/configure b/configure
+index 4f2b77a..485d3e8 100755
+--- a/configure
++++ b/configure
+@@ -104,6 +104,9 @@ if [ "$sysname" = "" ]; then
+ 	     2) sysname=linux-2.2 ;;
+ 	     *) sysname=linux-2.2 ;;
+ 	   esac;;
++	3) case $minor in
++		*) sysname=linux-2.2 ;;
++	   esac ;;
+       esac;;
+     SunOS)
+       release=`uname -r`
+-- 
+1.7.7.1
+

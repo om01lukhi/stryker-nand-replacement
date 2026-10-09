@@ -1,0 +1,55 @@
+--- totem-2.26.2/Makefile.in 2009-07-02 20:49:58.258012181 +0800
++++ totem-2.26.2.modified/Makefile.in        2009-07-02 20:49:13.236761453 +0800
+@@ -322,7 +322,7 @@
+ top_build_prefix = @top_build_prefix@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+-SUBDIRS = lib bindings po data src docs help $(am__append_1)
++SUBDIRS = lib bindings po data src docs $(am__append_1)
+ EXTRA_DIST = \
+        license_change          \
+        autogen.sh              \
+--- totem-2.26.2/configure	2009-07-02 20:43:59.556768319 +0800
++++ totem-2.26.2.modified/configure	2009-07-02 20:42:36.766763427 +0800
+@@ -6989,14 +6989,6 @@
+   gdu_cv_have_gdu=no
+ fi
+ 
+-if test "$gdu_cv_have_gdu" = "yes"; then
+-	:
+-else
+-	{ { $as_echo "$as_me:$LINENO: error: gnome-doc-utils >= $gdu_cv_version_required not found" >&5
+-$as_echo "$as_me: error: gnome-doc-utils >= $gdu_cv_version_required not found" >&2;}
+-   { (exit 1); exit 1; }; }
+-fi
+-
+ 
+ 
+ # Check whether --with-help-dir was given.
+@@ -23225,7 +23217,7 @@
+ fi
+ 	fi
+ 
+-	MM="gstreamer-0.10 >= $GST_REQS gstreamer-base-0.10 >= $GST_REQS gstreamer-plugins-base-0.10 >= $GSTPLUG_REQS gstreamer-tag-0.10 >= $GSTPLUG_REQS gconf-2.0"
++	MM="gstreamer-0.10 >= $GST_REQS gstreamer-base-0.10 >= $GST_REQS gstreamer-plugins-base-0.10 >= $GSTPLUG_REQS gconf-2.0"
+ 
+ pkg_failed=no
+ { $as_echo "$as_me:$LINENO: checking for GST" >&5
+@@ -23328,7 +23320,7 @@
+ 		" >&2;}
+    { (exit 1); exit 1; }; }
+ 	fi
+-
++if [ 0 != 0 ]; then
+ 		for base_element in playbin ffmpegcolorspace videoscale
+ 	do
+ 		{ $as_echo "$as_me:$LINENO: checking GStreamer 0.10 $base_element plugin" >&5
+@@ -23373,7 +23365,7 @@
+ 		fi
+ 	done
+ 
+-
++fi
+ fi
+ 
+ if test x$ENABLE_XINE = xno && test x$HAVE_GSTREAMER = xno; then

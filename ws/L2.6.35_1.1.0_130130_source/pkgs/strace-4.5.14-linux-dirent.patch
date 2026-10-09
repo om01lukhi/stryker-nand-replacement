@@ -1,0 +1,31 @@
+Steve Papacharalambous <stevep@freescale.com> 08 December 2008:
+
+Patch to fix linux/dirent.h removed from linux kernel headers.
+
+Patch back ported from strace-4.5.18
+
+diff --exclude CVS -uNr strace-4.5.14/file.c strace-4.5.14.modified/file.c
+--- strace-4.5.14/file.c	Wed Jun  8 21:45:28 2005
++++ strace-4.5.14.modified/file.c	Mon Dec  8 15:47:14 2008
+@@ -34,13 +34,15 @@
+ #include "defs.h"
+ 
+ #include <dirent.h>
++
++
+ #ifdef LINUX
+-#define dirent kernel_dirent
+-#define dirent64 kernel_dirent64
+-#include <linux/types.h>
+-#include <linux/dirent.h>
+-#undef dirent
+-#undef dirent64
++struct kernel_dirent {
++	unsigned long	d_ino;
++	unsigned long	d_off;
++	unsigned long	d_reclen;
++	char		d_name[1];
++};
+ #else
+ #define kernel_dirent dirent
+ #endif

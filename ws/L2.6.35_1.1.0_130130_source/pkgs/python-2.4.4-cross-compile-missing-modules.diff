@@ -1,0 +1,17 @@
+--- setup.py.orig	2007-05-23 10:21:06.000000000 +0800
++++ setup.py	2007-05-23 10:21:10.000000000 +0800
+@@ -319,6 +319,14 @@
+         lib_dirs = []
+         inc_dirs = []
+ 
++        ldflags = sysconfig.get_config_var('LDFLAGS')
++        ldflagitems = ldflags.split()
++        for i in range(0, len(ldflagitems)):
++            if ldflagitems[i] == '-L':
++                lib_dirs.append(ldflagitems[i+1])
++            elif ldflagitems[i].startswith('-L'):
++                lib_dirs.append(ldflagitems[i][2:])
++
+         #
+         # The following modules are all pretty straightforward, and compile
+         # on pretty much any POSIXish platform.

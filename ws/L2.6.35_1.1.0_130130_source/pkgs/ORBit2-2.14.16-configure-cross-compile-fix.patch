@@ -1,0 +1,80 @@
+diff --exclude CVS -uNr ORBit2-2.14.16/configure ORBit2-2.14.16.modified/configure
+--- ORBit2-2.14.16/configure	2008-09-16 08:11:11.000000000 -0500
++++ ORBit2-2.14.16.modified/configure	2009-04-08 10:31:12.000000000 -0500
+@@ -24210,75 +24210,6 @@
+    { (exit 1); exit 1; }; } ;;
+  esac
+ 
+-
+-
+-dofus_save_libs="$LIBS"
+-LIBS="$ORBIT_LIBS $LIBS"
+-if test "$cross_compiling" = yes; then
+-  { { $as_echo "$as_me:$LINENO: error: cannot run test program while cross compiling
+-See \`config.log' for more details." >&5
+-$as_echo "$as_me: error: cannot run test program while cross compiling
+-See \`config.log' for more details." >&2;}
+-   { (exit 1); exit 1; }; }
+-else
+-  cat >conftest.$ac_ext <<_ACEOF
+-/* confdefs.h.  */
+-_ACEOF
+-cat confdefs.h >>conftest.$ac_ext
+-cat >>conftest.$ac_ext <<_ACEOF
+-/* end confdefs.h.  */
+- #include <stdio.h>
+-             main ()
+-             {
+-               return 0;
+-             }
+-_ACEOF
+-rm -f conftest$ac_exeext
+-if { (ac_try="$ac_link"
+-case "(($ac_try" in
+-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+-  *) ac_try_echo=$ac_try;;
+-esac
+-eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
+-$as_echo "$ac_try_echo") >&5
+-  (eval "$ac_link") 2>&5
+-  ac_status=$?
+-  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+-  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
+-  { (case "(($ac_try" in
+-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+-  *) ac_try_echo=$ac_try;;
+-esac
+-eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
+-$as_echo "$ac_try_echo") >&5
+-  (eval "$ac_try") 2>&5
+-  ac_status=$?
+-  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+-  (exit $ac_status); }; }; then
+-  :
+-else
+-  $as_echo "$as_me: program exited with status $ac_status" >&5
+-$as_echo "$as_me: failed program was:" >&5
+-sed 's/^/| /' conftest.$ac_ext >&5
+-
+-( exit $ac_status )
+-{ { $as_echo "$as_me:$LINENO: error:
+-Linking is badly borked on your system. Please ensure your library path is correct
+-Check config.log for details - check near the end of the log above 'failed program was'
+-Alternatively ensure that your /etc/ld.so.conf (and/or LD_LIBRARY_PATH) includes the
+-prefix you're compiling on: '${prefix}' " >&5
+-$as_echo "$as_me: error:
+-Linking is badly borked on your system. Please ensure your library path is correct
+-Check config.log for details - check near the end of the log above 'failed program was'
+-Alternatively ensure that your /etc/ld.so.conf (and/or LD_LIBRARY_PATH) includes the
+-prefix you're compiling on: '${prefix}' " >&2;}
+-   { (exit 1); exit 1; }; }
+-fi
+-rm -rf conftest.dSYM
+-rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
+-fi
+-
+-
+ LIBS="$dofus_save_libs"
+ 
+ orig_CPPFLAGS=$CPPFLAGS
+

@@ -1,0 +1,56 @@
+Steve Papacharalambous < stevep at freescale dot com> 13jun07:
+
+This patch fixes relink problems by removing -L /usr/lib (libdir):
+
+[snip]
+ /bin/sh ../libtool --mode=install /usr/bin/install -c  libgobject-2.0.la
+/home/stevep/work/ltib/tmp/glib2//opt/freescale/rootfs/ppc/usr/lib/libgobject-2.0.la
+libtool: install: warning: relinking `libgobject-2.0.la'
+(cd /home/stevep/work/ltib/rpm/BUILD/glib-2.12.11/gobject; /bin/sh ../libtool --mode=relink gcc -g -O2 -Wall -o libgobject-2.0.la -rpath /usr/lib -version-info 1200:11:1200 -export-dynamic -export-symbols-regex "^[^_].*" gboxed.lo gclosure.lo genums.lo gobject.lo gparam.lo gparamspecs.lo gsignal.lo gsourceclosure.lo gtype.lo gtypemodule.lo gtypeplugin.lo gvalue.lo gvaluearray.lo gvaluetransform.lo gvaluetypes.lo ../glib/libglib-2.0.la -inst-prefix-dir /home/stevep/work/ltib/tmp/glib2//opt/freescale/rootfs/ppc)
+generating symbol list for `libgobject-2.0.la'
+nm  .libs/gboxed.o .libs/gclosure.o .libs/genums.o .libs/gobject.o
+.libs/gparam.o .libs/gparamspecs.o .libs/gsignal.o .libs/gsourceclosure.o
+.libs/gtype.o .libs/gtypemodule.o .libs/gtypeplugin.o .libs/gvalue.o
+.libs/gvaluearray.o .libs/gvaluetransform.o .libs/gvaluetypes.o  | sed -n -e
+'s/^.*[  ]\([ABCDGIRSTW][ABCDGIRSTW]*\)[         ][
+]*\([_A-Za-z][_A-Za-z0-9]*\)$/\1 \2 \2/p' | /usr/local/bin/sed 's/.* //' |
+sort | uniq > .libs/libgobject-2.0.exp
+/bin/grep -E -e "^[^_].*" ".libs/libgobject-2.0.exp" >
+".libs/libgobject-2.0.expT"
+mv -f ".libs/libgobject-2.0.expT" ".libs/libgobject-2.0.exp"
+echo "{ global:" > .libs/libgobject-2.0.ver
+ cat .libs/libgobject-2.0.exp | sed -e "s/\(.*\)/\1;/" >>
+.libs/libgobject-2.0.ver
+ echo "local: *; };" >> .libs/libgobject-2.0.ver
+ gcc -shared  .libs/gboxed.o .libs/gclosure.o .libs/genums.o .libs/gobject.o
+.libs/gparam.o .libs/gparamspecs.o .libs/gsignal.o .libs/gsourceclosure.o
+.libs/gtype.o .libs/gtypemodule.o .libs/gtypeplugin.o .libs/gvalue.o
+.libs/gvaluearray.o .libs/gvaluetransform.o .libs/gvaluetypes.o -L/home/stevep/work/ltib/tmp/glib2//opt/freescale/rootfs/ppc/usr/lib -L/usr/lib -lglib-2.0  -Wl,-soname -Wl,libgobject-2.0.so.0 -Wl,-version-script -Wl,.libs/libgobject-2.0.ver -o .libs/libgobject-2.0.so.0.1200.11
+/opt/freescale/usr/local/gcc-4.1.59-eglibc-2.5.59/powerpc-linux-gnu/lib/gcc/powerpc-linux-gnu/4.1.2/../../../../powerpc-linux-gnu/bin/ld:
+warning: library search path "/usr/lib" is unsafe for cross-compilation
+/opt/freescale/usr/local/gcc-4.1.59-eglibc-2.5.59/powerpc-linux-gnu/lib/gcc/powerpc-linux-gnu/4.1.2/../../../../powerpc-linux-gnu/bin/ld:
+skipping incompatible /lib/libc.so.6 when searching for /lib/libc.so.6
+/opt/freescale/usr/local/gcc-4.1.59-eglibc-2.5.59/powerpc-linux-gnu/lib/gcc/powerpc-linux-gnu/4.1.2/../../../../powerpc-linux-gnu/bin/ld:
+cannot find /lib/libc.so.6
+collect2: ld returned 1 exit status
+libtool: install: error: relink `libgobject-2.0.la' with the above command
+before installing it
+make[4]: *** [install-libLTLIBRARIES] Error 1
+make[4]: Leaving directory
+`/home/stevep/work/ltib/rpm/BUILD/glib-2.12.11/gobject'
+[/snip]
+
+
+diff --exclude CVS -uNr glib-2.12.11/ltmain.sh glib-2.12.11.modified/ltmain.sh
+--- glib-2.12.11/ltmain.sh	Sun Jan 14 04:15:09 2007
++++ glib-2.12.11.modified/ltmain.sh	Wed Jun 13 10:50:14 2007
+@@ -2761,7 +2761,8 @@
+ 	      fi
+ 	    else
+ 	      # We cannot seem to hardcode it, guess we'll fake it.
+-	      add_dir="-L$libdir"
++              # stevep: 13jun07: comment this out as it breaks cross compiling.
++	      # add_dir="-L$libdir"
+ 	      # Try looking first in the location we're being installed to.
+ 	      if test -n "$inst_prefix_dir"; then
+ 		case $libdir in

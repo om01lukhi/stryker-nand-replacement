@@ -1,0 +1,67 @@
+diff -ruN skell-1.16/etc/inetd.conf skell-1.16/etc/inetd.conf
+--- skell-1.16/etc/inetd.conf	2005-11-28 09:19:39.000000000 -0600
++++ skell-1.16/etc/inetd.conf	2008-05-06 20:56:52.000000000 -0500
+@@ -23,8 +23,8 @@
+ #
+ # These are standard services.
+ #
+-ftp	stream	tcp	nowait	root	/usr/sbin/vsftpd	vsftpd
+-telnet	stream  tcp     nowait  root    /usr/sbin/telnetd	telnetd
++ftp	stream	tcp	nowait	root	/usr/sbin/ftpd	ftpd
++telnet	stream  tcp     nowait  root    /usr/sbin/telnetd	telnetd -i
+ # nntp	stream	tcp	nowait	root	tcpd	in.nntpd
+ # smtp  stream  tcp     nowait  root    tcpd    sendmail -v
+ #
+diff -ruN skell-1.16/etc/modprobe.conf skell-1.16/etc/modprobe.conf
+--- skell-1.16/etc/modprobe.conf	1969-12-31 18:00:00.000000000 -0600
++++ skell-1.16/etc/modprobe.conf	2007-11-20 08:21:08.000000000 -0600
+@@ -0,0 +1 @@
++install ide-cs /sbin/modprobe --ignore-install ide_cs && /sbin/modprobe ide_disk
+diff -ruN skell-1.16/etc/profile skell-1.16/etc/profile
+--- skell-1.16/etc/profile	2005-06-10 11:43:22.000000000 -0500
++++ skell-1.16/etc/profile	2007-11-20 08:21:08.000000000 -0600
+@@ -1,2 +1,11 @@
+ PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin
+ export PATH
++
++alias ll='ls -l'
++alias la='ll -a'
++
++export PS1='\u@\h \w$ '
++export PS2='> '
++export PS3='? '
++export PS4='[$LINENO]+'
++
+diff -ruN skell-1.16/etc/securetty skell-1.16/etc/securetty
+--- skell-1.16/etc/securetty	2006-04-26 09:35:04.000000000 -0500
++++ skell-1.16/etc/securetty	2008-05-06 20:56:52.000000000 -0500
+@@ -1,4 +1,8 @@
+ console
++ttymxc0
++ttymxc1
++ttymxc/0
++ttymxc/1
+ tty1
+ tty2
+ tty3
+@@ -7,3 +11,11 @@
+ ttyAM1
+ tts/0
+ tts/1
++pts/0
++pts/1
++pts/2
++pts/3
++pts/4
++pts/5
++pts/6
++pts/7
+diff -ruN skell-1.16/etc/shadow skell-1.16/etc/shadow
+--- skell-1.16/etc/shadow	2006-04-26 09:35:04.000000000 -0500
++++ skell-1.16/etc/shadow	2007-11-20 08:21:08.000000000 -0600
+@@ -1,4 +1,4 @@
+-root:$1$$oCLuEVgI1iAqOA8pwkzAg1:11851:0:99999:7:::
++root::11851:0:99999:7:::
+ bin:*:11851:0:99999:7:::
+ daemon:*:11851:0:99999:7:::
+ adm:*:11851:0:99999:7:::

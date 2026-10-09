@@ -1,0 +1,14 @@
+Fix for building on Ubuntu 9.10 and Ubuntu 10.04 build hosts.
+
+diff -ruN gtkhtml-3.24.2.orig/gtkhtml/htmlurl.c gtkhtml-3.24.2/gtkhtml/htmlurl.c
+--- gtkhtml-3.24.2.orig/gtkhtml/htmlurl.c	2008-10-13 16:31:38.000000000 +0800
++++ gtkhtml-3.24.2/gtkhtml/htmlurl.c	2010-03-13 21:18:49.920062479 +0800
+@@ -19,7 +19,7 @@
+     Boston, MA 02110-1301, USA.
+ 
+     Author: Ettore Perazzoli (ettore@helixcode.com)  */
+-
++#define _GNU_SOURCE
+ #include <config.h>
+ #include <stdio.h>
+ #include <string.h>

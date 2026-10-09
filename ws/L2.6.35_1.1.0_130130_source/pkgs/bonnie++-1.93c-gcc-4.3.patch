@@ -1,0 +1,62 @@
+Steve Papacharalambous <stevep@freescale.com> 19 September 2008:
+Patch to fix gcc-4.3 build errors caused by the c++ header cleanup in gcc-4.3
+which removed indirect inclusion of headers.  This means that all headers must
+be directly included with a #include
+
+Example error:
+[snip]
+g++ -O2  -DNDEBUG -Wall -W -Wshadow -Wpointer-arith -Wwrite-strings -pedantic -ffor-scope   -c bon_csv2html.cpp
+bon_csv2html.cpp: In function 'void usage()':
+bon_csv2html.cpp:76: error: 'exit' was not declared in this scope
+bon_csv2html.cpp: In function 'void calc_vals()':
+bon_csv2html.cpp:224: error: 'qsort' was not declared in this scope
+bon_csv2html.cpp: In function 'void read_in(const char*)':
+bon_csv2html.cpp:423: error: 'free' was not declared in this scope
+make: *** [bon_csv2html.o] Error 1
+[/snip]
+
+Patch originated by Steve Papacharalambous.
+===============================================================================
+diff --exclude CVS -uNr bonnie++-1.93c/bon_csv2html.cpp bonnie++-1.93c.modified/bon_csv2html.cpp
+--- bonnie++-1.93c/bon_csv2html.cpp	Wed Nov 13 22:22:02 2002
++++ bonnie++-1.93c.modified/bon_csv2html.cpp	Fri Sep 19 10:25:32 2008
+@@ -3,6 +3,7 @@
+ #include <vector>
+ #include <string.h>
+ #include <math.h>
++#include <stdlib.h>
+ 
+ // Maximum number of items expected on a csv line
+ #define MAX_ITEMS 48
+diff --exclude CVS -uNr bonnie++-1.93c/getc_putc.cpp bonnie++-1.93c.modified/getc_putc.cpp
+--- bonnie++-1.93c/getc_putc.cpp	Fri Sep 19 10:30:22 2008
++++ bonnie++-1.93c.modified/getc_putc.cpp	Fri Sep 19 10:28:00 2008
+@@ -12,6 +12,7 @@
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <fcntl.h>
++#include <string.h>
+ #include <vector>
+ 
+ #include "duration.h"
+diff --exclude CVS -uNr bonnie++-1.93c/getc_putc_helper.cpp bonnie++-1.93c.modified/getc_putc_helper.cpp
+--- bonnie++-1.93c/getc_putc_helper.cpp	Sun Dec  9 14:49:57 2001
++++ bonnie++-1.93c.modified/getc_putc_helper.cpp	Fri Sep 19 10:29:15 2008
+@@ -7,6 +7,7 @@
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <fcntl.h>
++#include <string.h>
+ #include "duration.h"
+ #include <vector>
+ #include "getc_putc.h"
+diff --exclude CVS -uNr bonnie++-1.93c/zcav.cpp bonnie++-1.93c.modified/zcav.cpp
+--- bonnie++-1.93c/zcav.cpp	Tue Nov  6 16:34:07 2001
++++ bonnie++-1.93c.modified/zcav.cpp	Fri Sep 19 10:26:50 2008
+@@ -1,4 +1,6 @@
+ #include "port.h"
++#include <stdlib.h>
++#include <string.h>
+ #ifndef WIN32
+ #include <unistd.h>
+ #endif

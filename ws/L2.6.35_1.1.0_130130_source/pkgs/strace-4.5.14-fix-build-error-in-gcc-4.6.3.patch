@@ -1,0 +1,12 @@
+diff -urN strace-4.5.14-bak2/configure strace-4.5.14-bak/configure
+--- strace-4.5.14-bak2/configure	2012-03-16 14:04:21.000000000 +0800
++++ strace-4.5.14-bak/configure	2012-03-16 14:12:10.000000000 +0800
+@@ -6945,7 +6945,7 @@
+ cat confdefs.h >>conftest.$ac_ext
+ cat >>conftest.$ac_ext <<_ACEOF
+ /* end confdefs.h.  */
+-#include <linux/socket.h>
++#include <sys/socket.h>
+ 
+ #include <$ac_header>
+ _ACEOF

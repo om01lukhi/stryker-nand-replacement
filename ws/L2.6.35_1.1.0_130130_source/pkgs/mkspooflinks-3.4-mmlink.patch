@@ -1,0 +1,17 @@
+15aug07, Stuart Hughes <stuarth at freescale.com>
+
+Add -MM to the list of gcc options that will prevent linking.  This
+gets rid of a warning when building the DTC.
+
+diff --exclude CVS -uNr mkspooflinks-3.4/spoof_wrapper mkspooflinks-3.4.modified/spoof_wrapper
+--- mkspooflinks-3.4/spoof_wrapper	2007-05-02 10:53:08.000000000 +0100
++++ mkspooflinks-3.4.modified/spoof_wrapper	2007-08-15 13:34:44.000000000 +0100
+@@ -50,7 +50,7 @@
+     $link = 1;
+     foreach $opt (@ARGV) {
+         $link = 0, last if $opt eq '-c' || $opt eq '-S' 
+-                        || $opt eq '-E' || $opt eq '-M';
++                        || $opt eq '-E' || $opt eq '-M' || $opt eq '-MM';
+     }
+     $link = 0 if $#ARGV == -1;
+     $link = 0 if $#ARGV == 0 && $ARGV[0]  eq '-v';

@@ -1,0 +1,35 @@
+--- dbus-glib-0.76/Makefile.in	2008-06-05 13:55:41.000000000 -0500
++++ dbus-glib-0.76.modified/Makefile.in	2008-10-10 08:19:27.000000000 -0500
+@@ -264,7 +264,7 @@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+ GLIB_PC = dbus-glib-1.pc
+-SUBDIRS = dbus tools test doc
++SUBDIRS = dbus tools
+ DIST_SUBDIRS = dbus tools test doc m4
+ pkgconfigdir = $(libdir)/pkgconfig
+ pkgconfig_DATA = $(GLIB_PC)
+--- dbus-glib-0.76/dbus/Makefile.in	2008-06-05 13:55:41.000000000 -0500
++++ dbus-glib-0.76.modified/dbus/Makefile.in	2008-10-10 08:18:53.000000000 -0500
+@@ -295,7 +295,7 @@
+ target_vendor = @target_vendor@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+-SUBDIRS = . examples
++SUBDIRS = .
+ INCLUDES = \
+ 	-I$(top_srcdir)						\
+ 	-I$(top_builddir)					\
+--- dbus-glib-0.76/tools/Makefile.in	2008-06-05 13:55:41.000000000 -0500
++++ dbus-glib-0.76.modified/tools/Makefile.in	2009-04-09 13:09:04.000000000 -0500
+@@ -478,8 +478,8 @@
+ 	uninstall-nodist_libdbus_glibHEADERS
+ 
+ 
+-dbus-glib-bindings.h: dbus-bus-introspect.xml $(top_builddir)/dbus/dbus-binding-tool$(EXEEXT)
+-	$(top_builddir)/dbus/dbus-binding-tool --mode=glib-client --prefix=dbus_bus --output=dbus-glib-bindings.h dbus-bus-introspect.xml
++dbus-glib-bindings.h: dbus-bus-introspect.xml
++	dbus-binding-tool --mode=glib-client --prefix=dbus_bus --output=dbus-glib-bindings.h dbus-bus-introspect.xml
+ 
+ @USE_INTROSPECT_XML_TRUE@dbus-bus-introspect.xml: $(INTROSPECT_XML_PATH)
+ @USE_INTROSPECT_XML_TRUE@	cp $(INTROSPECT_XML_PATH) dbus-bus-introspect.xml

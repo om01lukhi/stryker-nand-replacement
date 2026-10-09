@@ -1,0 +1,15 @@
+diff -Nur liboil-0.3.16/liboil/liboilcpu-powerpc.c liboil-0.3.16-new/liboil/liboilcpu-powerpc.c
+--- liboil-0.3.16/liboil/liboilcpu-powerpc.c	2009-02-27 03:50:42.000000000 +0800
++++ liboil-0.3.16-new/liboil/liboilcpu-powerpc.c	2009-04-27 11:20:00.000000000 +0800
+@@ -79,7 +79,11 @@
+ static void
+ test_altivec (void * ignored)
+ {
++#ifdef HAVE_ALTIVEC    
+   asm volatile ("vor v0, v0, v0\n");
++#else
++  return;
++#endif  
+ }
+ #endif
+ 

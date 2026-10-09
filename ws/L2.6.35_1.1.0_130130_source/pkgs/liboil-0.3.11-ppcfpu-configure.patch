@@ -1,0 +1,23 @@
+Steve Papacharalambous  <stevep@freescale.com>  19jun07:
+
+This patch prevents the configure script from incorrectly adding the
+following:
+
+ o classic powerpc FPU instructions for cores that don't have an FPU,
+   for example the 832x CPUs
+
+Patch originated by Steve Papacharalambous.
+
+
+diff --exclude CVS -uNr liboil-0.3.11/configure liboil-0.3.11.modified/configure
+--- liboil-0.3.11/configure	Tue Jun 19 13:50:43 2007
++++ liboil-0.3.11.modified/configure	Tue Jun 19 13:43:32 2007
+@@ -20040,7 +20040,7 @@
+ 
+ rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+ 
+-  if test "X$flag_ok" = Xyes -a "X$HAVE_E500" = Xno ; then
++  if test "X$flag_ok" = Xyes -a "X$HAVE_E500" = Xno -a "X$HAVE_FPU" = Xyes ; then
+     HAVE_GCC_ASM_POWERPC_FPU=yes
+     true
+   else

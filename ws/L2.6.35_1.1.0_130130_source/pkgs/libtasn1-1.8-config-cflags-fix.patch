@@ -1,0 +1,13 @@
+diff --exclude CVS -uNr libtasn1-1.8/configure libtasn1-1.8.modified/configure
+--- libtasn1-1.8/configure	2009-01-16 05:53:58.000000000 -0600
++++ libtasn1-1.8.modified/configure	2009-04-03 08:41:42.000000000 -0500
+@@ -19091,7 +19091,7 @@
+ 
+ # For libtasn1-config.
+ LIBTASN1_LIBS="-L${libdir} -ltasn1"
+-LIBTASN1_CFLAGS="-I${includedir}"
++#LIBTASN1_CFLAGS="-I${includedir}"
+ 
+ 
+ ac_config_commands="$ac_config_commands chmod"
+

@@ -1,0 +1,10 @@
+diff --exclude CVS -uNr skell-1.18/etc/rc.d/init.d/dropbear skell-1.18.modified/etc/rc.d/init.d/dropbear
+--- skell-1.18/etc/rc.d/init.d/dropbear	2008-09-23 13:48:39.000000000 +0100
++++ skell-1.18.modified/etc/rc.d/init.d/dropbear	2008-12-12 15:15:12.000000000 +0000
+@@ -20,5 +20,5 @@
+        dropbearkey -t rsa -f /etc/dropbear/dropbear_rsa_host_key
+     fi
+     echo "Starting the dropbear ssh server: "
+-    /usr/sbin/dropbear
++    /usr/sbin/dropbear $DROPBEAR_ARGS
+ fi

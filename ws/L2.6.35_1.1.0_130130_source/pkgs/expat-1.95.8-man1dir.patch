@@ -1,0 +1,19 @@
+20080219, Stuart Hughes <stuarth at freescale dot com>
+
+This fixes the install path of the manpages for expat
+
+diff --exclude CVS -uNr expat-1.95.8/Makefile.in expat-1.95.8.modified/Makefile.in
+--- expat-1.95.8/Makefile.in	2008-02-19 11:09:34.000000000 -0600
++++ expat-1.95.8.modified/Makefile.in	2008-02-19 11:07:31.000000000 -0600
+@@ -73,9 +73,9 @@
+ 	tests/runtests
+ 
+ install: xmlwf/xmlwf installlib
+-	$(mkinstalldirs) $(DESTDIR)$(bindir) $(DESTDIR)$(mandir)
++	$(mkinstalldirs) $(DESTDIR)$(bindir) $(DESTDIR)$(man1dir)
+ 	$(LIBTOOL) --mode=install $(INSTALL_PROGRAM) xmlwf/xmlwf $(DESTDIR)$(bindir)/xmlwf
+-	$(INSTALL_DATA) $(MANFILE) $(DESTDIR)$(mandir)
++	$(INSTALL_DATA) $(MANFILE) $(DESTDIR)$(man1dir)
+ 
+ installlib: $(LIBRARY) $(APIHEADER)
+ 	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(includedir)

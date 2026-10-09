@@ -1,0 +1,12 @@
+diff -ruN gst-plugins-base-0.10.35.orig/gst-libs/gst/audio/Makefile.in gst-plugins-base-0.10.35/gst-libs/gst/audio/Makefile.in
+--- gst-plugins-base-0.10.35.orig/gst-libs/gst/audio/Makefile.in	2011-12-31 17:03:50.000000000 +0800
++++ gst-plugins-base-0.10.35/gst-libs/gst/audio/Makefile.in	2011-12-31 17:05:47.000000000 +0800
+@@ -532,7 +532,7 @@
+ libgstaudio_@GST_MAJORMINOR@_la_LDFLAGS = $(GST_LIB_LDFLAGS) $(GST_ALL_LDFLAGS) $(GST_LT_LDFLAGS)
+ testchannels_SOURCES = testchannels.c
+ testchannels_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_CFLAGS)
+-testchannels_LDADD = $(builddir)/libgstaudio-$(GST_MAJORMINOR).la $(GST_LIBS)
++testchannels_LDADD = $(builddir)/libgstaudio-$(GST_MAJORMINOR).la $(builddir)/../interfaces/libgstinterfaces-$(GST_MAJORMINOR).la $(GST_LIBS)
+ enum_headers = $(foreach h,$(glib_enum_headers),\n\#include \"$(h)\")
+ @HAVE_INTROSPECTION_TRUE@BUILT_GIRSOURCES = GstAudio-@GST_MAJORMINOR@.gir
+ @HAVE_INTROSPECTION_TRUE@gir_headers = $(patsubst %,$(srcdir)/%, \

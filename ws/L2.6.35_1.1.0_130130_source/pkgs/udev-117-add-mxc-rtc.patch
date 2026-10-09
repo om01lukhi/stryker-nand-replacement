@@ -1,0 +1,11 @@
+diff --exclude CVS -uNr udev-117/etc/udev/rules.d/80-drivers.rules udev-117.modified/etc/udev/rules.d/80-drivers.rules
+--- udev-117/etc/udev/rules.d/80-drivers.rules	2007-11-14 03:47:34.000000000 +0800
++++ udev-117.modified/etc/udev/rules.d/80-drivers.rules	2009-05-08 13:41:15.000000000 +0800
+@@ -11,6 +11,7 @@
+ SUBSYSTEM=="i2o", RUN+="/sbin/modprobe i2o_block"
+ SUBSYSTEM=="ide", ATTR{media}=="tape", RUN+="/sbin/modprobe ide-scsi"
+ SUBSYSTEM=="scsi_device", TEST!="[module/sg]", RUN+="/sbin/modprobe sg"
++SUBSYSTEM=="rtc", ATTR{name}=="mxc_rtc", SYMLINK+="rtc"
+ 
+ LABEL="drivers_end"
+ 

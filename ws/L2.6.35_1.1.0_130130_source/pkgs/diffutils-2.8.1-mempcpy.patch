@@ -1,0 +1,17 @@
+Tues 13th Feb 2007, Stuart Hughes <stuarth at freescale dot com>
+
+uClibc no longer exposes __mempcpy, this patch fixes up diffutils
+to stop it reaching into the guts of the C library
+
+diff --exclude CVS -uNr diffutils-2.8.1/lib/regex.c diffutils-2.8.1.modified/lib/regex.c
+--- diffutils-2.8.1/lib/regex.c	2002-03-01 07:44:52.000000000 +0000
++++ diffutils-2.8.1.modified/lib/regex.c	2007-02-13 17:06:48.000000000 +0000
+@@ -8314,7 +8314,7 @@
+       if (msg_size > errbuf_size)
+         {
+ #if defined HAVE_MEMPCPY || defined _LIBC
+-	  *((char *) __mempcpy (errbuf, msg, errbuf_size - 1)) = '\0';
++	  *((char *) mempcpy (errbuf, msg, errbuf_size - 1)) = '\0';
+ #else
+           memcpy (errbuf, msg, errbuf_size - 1);
+           errbuf[errbuf_size - 1] = 0;

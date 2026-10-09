@@ -1,0 +1,32 @@
+From 15f604e85660f62d3338b34124f635a68721b3b9 Mon Sep 17 00:00:00 2001
+From: Adrian Alonso <aalonso@freescale.com>
+Date: Sat, 12 Nov 2011 12:47:47 -0600
+Subject: [PATCH] python: regen fix on host running linux-3.0
+
+* Fix regen calling crosscompiled python in host running
+  linux-3.0 instead of hostpython
+  ./regen: line 3: python: cannot execute binary file
+
+Signed-off-by: Adrian Alonso <aalonso@freescale.com>
+---
+ Lib/plat-linux3/regen |    8 ++++++++
+ 1 files changed, 8 insertions(+), 0 deletions(-)
+ create mode 100755 Lib/plat-linux3/regen
+
+diff --git a/Lib/plat-linux3/regen b/Lib/plat-linux3/regen
+new file mode 100755
+index 0000000..c76950e
+--- /dev/null
++++ b/Lib/plat-linux3/regen
+@@ -0,0 +1,8 @@
++#! /bin/sh
++case `uname` in
++Linux*)	;;
++*)	echo Probably not on a Linux system 1>&2
++	exit 1;;
++esac
++set -v
++h2py -i '(u_long)' /usr/include/sys/types.h /usr/include/netinet/in.h /usr/include/dlfcn.h
+-- 
+1.7.7.1
+

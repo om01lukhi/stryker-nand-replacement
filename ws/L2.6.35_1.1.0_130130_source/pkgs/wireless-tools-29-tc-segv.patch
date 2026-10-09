@@ -1,0 +1,22 @@
+20081003 Stuart Hughes <stuarth at freescale dot com>
+
+This is a temporary work-around for what might be a toolchain bug.
+If you run iwconfig --version, it terminates with a SEGV if compiled
+with -Os.  This patch changes it to -O2, which doesn't exhibit
+the problem.
+
+
+diff --exclude CVS -uNr wireless_tools.29/Makefile wireless_tools.29.modified/Makefile
+--- wireless_tools.29/Makefile	2007-09-18 00:56:46.000000000 +0100
++++ wireless_tools.29.modified/Makefile	2008-10-03 15:24:31.000000000 +0100
+@@ -102,7 +102,9 @@
+ endif
+ 
+ # Other flags
+-CFLAGS=-Os -W -Wall -Wstrict-prototypes -Wmissing-prototypes -Wshadow \
++#CFLAGS=-Os -W -Wall -Wstrict-prototypes -Wmissing-prototypes -Wshadow \
++# temorary work around, -Os is causing a problem with one toolchain
++CFLAGS=-O2 -W -Wall -Wstrict-prototypes -Wmissing-prototypes -Wshadow \
+ 	-Wpointer-arith -Wcast-qual -Winline -I.
+ #CFLAGS=-O2 -W -Wall -Wstrict-prototypes -I.
+ DEPFLAGS=-MMD

@@ -1,0 +1,72 @@
+Steve Papacharalambous <stevep@freescale.com> 14jun07:
+
+This patch fixes relink problems by removing "-L /usr/lib" (libdir):
+
+[snip]
+ /bin/sh ../../libtool --mode=install /usr/bin/install -c
+'libgstaudioconvert.la'
+'/home/stevep/work/ltib/tmp/gst-plugins-base//opt/freescale/rootfs/ppc/usr/lib/gstreamer-0.10/libgstaudioconvert.la'
+libtool: install: warning: relinking `libgstaudioconvert.la'
+(cd
+/home/stevep/work/ltib/rpm/BUILD/gst-plugins-base-0.10.12/gst/audioconvert;
+/bin/sh ../../libtool  --tag=CC --mode=relink gcc -g -O2 -o
+libgstaudioconvert.la -rpath /usr/lib/gstreamer-0.10 -module -avoid-version -export-symbols-regex "^_*gst_plugin_desc\$" -no-undefined
+libgstaudioconvert_la-gstaudioconvert.lo libgstaudioconvert_la-audioconvert.lo
+libgstaudioconvert_la-gstchannelmix.lo libgstaudioconvert_la-plugin.lo
+../../gst-libs/gst/audio/libgstaudio-0.10.la -pthread -L/home/stevep/work/ltib/rootfs/usr/lib -lgstreamer-0.10 -lgobject-2.0 -lgmodule-2.0 -ldl -lgthread-2.0 -lrt -lxml2 -lglib-2.0 -pthread -L/home/stevep/work/ltib/rootfs/usr/lib -lgstbase-0.10 -lgstreamer-0.10 -lgobject-2.0 -lgmodule-2.0 -ldl -lgthread-2.0 -lrt -lxml2 -lglib-2.0 -inst-prefix-dir
+/home/stevep/work/ltib/tmp/gst-plugins-base//opt/freescale/rootfs/ppc)
+generating symbol list for `libgstaudioconvert.la'
+nm  .libs/libgstaudioconvert_la-gstaudioconvert.o
+.libs/libgstaudioconvert_la-audioconvert.o
+.libs/libgstaudioconvert_la-gstchannelmix.o
+.libs/libgstaudioconvert_la-plugin.o  | sed -n -e 's/^.*[
+]\([ABCDGIRSTW][ABCDGIRSTW]*\)[        ][
+]*\([_A-Za-z][_A-Za-z0-9]*\)$/\1 \2 \2/p' | /usr/local/bin/sed 's/.* //' |
+sort | uniq > .libs/libgstaudioconvert.exp
+grep -E -e "^_*gst_plugin_desc$" ".libs/libgstaudioconvert.exp" >
+".libs/libgstaudioconvert.expT"
+mv -f ".libs/libgstaudioconvert.expT" ".libs/libgstaudioconvert.exp"
+echo "{ global:" > .libs/libgstaudioconvert.ver
+ cat .libs/libgstaudioconvert.exp | sed -e "s/\(.*\)/\1;/" >>
+.libs/libgstaudioconvert.ver
+ echo "local: *; };" >> .libs/libgstaudioconvert.ver
+ gcc -shared  .libs/libgstaudioconvert_la-gstaudioconvert.o
+.libs/libgstaudioconvert_la-audioconvert.o
+.libs/libgstaudioconvert_la-gstchannelmix.o
+.libs/libgstaudioconvert_la-plugin.o -L/home/stevep/work/ltib/tmp/gst-plugins-base//opt/freescale/rootfs/ppc/usr/lib -L/usr/lib -lgstaudio-0.10 -L/home/stevep/work/ltib/rootfs/usr/lib -lgstbase-0.10 -lgstreamer-0.10 -lgobject-2.0 -lgmodule-2.0 -ldl -lgthread-2.0 -lrt -lxml2 -lglib-2.0  -pthread -pthread -Wl,-soname -Wl,libgstaudioconvert.so -Wl,-version-script -Wl,.libs/libgstaudioconvert.ver -o .libs/libgstaudioconvert.so
+/opt/freescale/usr/local/gcc-4.1.59-eglibc-2.5.59/powerpc-linux-gnu/lib/gcc/powerpc-linux-gnu/4.1.2/../../../../powerpc-linux-gnu/bin/ld:
+warning: library search path "/usr/lib" is unsafe for cross-compilation
+/opt/freescale/usr/local/gcc-4.1.59-eglibc-2.5.59/powerpc-linux-gnu/lib/gcc/powerpc-linux-gnu/4.1.2/../../../../powerpc-linux-gnu/bin/ld:
+skipping incompatible /usr/lib/libgobject-2.0.so when searching for -lgobject-2.0
+/opt/freescale/usr/local/gcc-4.1.59-eglibc-2.5.59/powerpc-linux-gnu/lib/gcc/powerpc-linux-gnu/4.1.2/../../../../powerpc-linux-gnu/bin/ld:
+skipping incompatible /usr/lib/libgmodule-2.0.so when searching for -lgmodule-2.0
+/opt/freescale/usr/local/gcc-4.1.59-eglibc-2.5.59/powerpc-linux-gnu/lib/gcc/powerpc-linux-gnu/4.1.2/../../../../powerpc-linux-gnu/bin/ld:
+skipping incompatible /usr/lib/libdl.so when searching for -ldl
+/opt/freescale/usr/local/gcc-4.1.59-eglibc-2.5.59/powerpc-linux-gnu/lib/gcc/powerpc-linux-gnu/4.1.2/../../../../powerpc-linux-gnu/bin/ld:
+skipping incompatible /usr/lib/libdl.a when searching for -ldl
+/opt/freescale/usr/local/gcc-4.1.59-eglibc-2.5.59/powerpc-linux-gnu/lib/gcc/powerpc-linux-gnu/4.1.2/../../../../powerpc-linux-gnu/bin/ld:
+skipping incompatible /usr/lib/libgthread-2.0.so when searching for -lgthread-2.0
+/opt/freescale/usr/local/gcc-4.1.59-eglibc-2.5.59/powerpc-linux-gnu/lib/gcc/powerpc-linux-gnu/4.1.2/../../../../powerpc-linux-gnu/bin/ld:
+skipping incompatible /lib/libpthread.so.0 when searching for
+/lib/libpthread.so.0
+/opt/freescale/usr/local/gcc-4.1.59-eglibc-2.5.59/powerpc-linux-gnu/lib/gcc/powerpc-linux-gnu/4.1.2/../../../../powerpc-linux-gnu/bin/ld:
+cannot find /lib/libpthread.so.0
+collect2: ld returned 1 exit status
+libtool: install: error: relink `libgstaudioconvert.la' with the above command
+before installing it
+make[3]: *** [install-pluginLTLIBRARIES] Error 1
+[/snip]
+
+diff --exclude CVS -uNr gst-plugins-base-0.10.12/ltmain.sh gst-plugins-base-0.10.12.modified/ltmain.sh
+--- gst-plugins-base-0.10.12/ltmain.sh	Tue Jan 10 15:23:50 2006
++++ gst-plugins-base-0.10.12.modified/ltmain.sh	Thu Jun 14 14:57:22 2007
+@@ -2764,7 +2764,8 @@
+ 	      fi
+ 	    else
+ 	      # We cannot seem to hardcode it, guess we'll fake it.
+-	      add_dir="-L$libdir"
++              # stevep: 14jun07: comment this out as it breaks cross compiling.
++	      # add_dir="-L$libdir"
+ 	      # Try looking first in the location we're being installed to.
+ 	      if test -n "$inst_prefix_dir"; then
+ 		case $libdir in

@@ -1,0 +1,18 @@
+Numerous packages have problems with libtool relinking passing in -L/usr/lib to 
+gcc. This patch will strip out that option which should never be valid.
+
+diff --exclude CVS -uNr mkspooflinks-3.4/spoof_wrapper mkspooflinks-3.4.modified/spoof_wrapper
+--- mkspooflinks-3.4/spoof_wrapper	2009-05-05 10:51:59.000000000 -0500
++++ mkspooflinks-3.4.modified/spoof_wrapper	2009-05-05 10:51:45.000000000 -0500
+@@ -58,6 +58,11 @@
+     push @srch, "-Wl,-rpath-link,$ENV{DEV_IMAGE}/lib:$ENV{DEV_IMAGE}/usr/lib" 
+                                                                       if $link;
+ 
++    if($link) {
++        my ( $index )= grep { $ARGV[$_] =~ /\-L\/usr\/lib*/ } 0..$#ARGV;
++        splice(@ARGV,$index,1) if defined $index;
++    }
++
+     if($ENV{TOOLCHAIN_CFLAGS}) {
+         @cflags = split(/\s+/, $ENV{TOOLCHAIN_CFLAGS});
+         push(@srch, @cflags);

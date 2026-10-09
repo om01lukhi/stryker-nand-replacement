@@ -1,0 +1,37 @@
+diff --exclude CVS -uNr udev-117/etc/udev/ltib/init_script udev-117.modified/etc/udev/ltib/init_script
+--- udev-117/etc/udev/ltib/init_script	2008-09-25 17:29:37.000000000 -0500
++++ udev-117.modified/etc/udev/ltib/init_script	2008-09-25 17:08:01.000000000 -0500
+@@ -9,13 +9,13 @@
+ case "$1" in
+     start)
+         echo "" > /proc/sys/kernel/hotplug
+-        
++
+         mount -n -o mode=0755 -t tmpfs tmpfs /dev
+ 
+         # Create static device nodes in /dev
+         mknod /dev/console c 5 1
+         mknod /dev/null c 1 3
+-        
++
+         echo "Starting the hotplug events dispatcher udevd"
+         udevd --daemon
+ 
+@@ -24,7 +24,7 @@
+         udevsettle --timeout=300
+ 
+         mkdir /dev/pts
+-        mount -t devpts devpts /dev/pts
++        mount -n -t devpts devpts /dev/pts
+ 
+         mkdir /dev/shm
+         ;;
+@@ -35,7 +35,7 @@
+         ;;
+     *)
+         echo "Usage: /etc/rc.d/init.d/udev {start|stop|reload}"
+-        echo 
++        echo
+         exit 1
+         ;;
+ esac

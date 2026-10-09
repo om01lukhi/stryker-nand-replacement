@@ -1,0 +1,13 @@
+diff --exclude CVS -uNr mkspooflinks-3.4/spoof_wrapper mkspooflinks-3.4.modified/spoof_wrapper
+--- mkspooflinks-3.4/spoof_wrapper	2008-11-11 18:43:02.000000000 +0000
++++ mkspooflinks-3.4.modified/spoof_wrapper	2008-11-11 18:42:49.000000000 +0000
+@@ -70,6 +70,9 @@
+ } else {
+     unshift(@ARGV, "$ENV{TOOLCHAIN_PREFIX}$fname");
+ }
++if($ENV{CCACHE_DIR} && $ENV{TOOLCHAIN_PATH}) {
++    unshift(@ARGV, "ccache");
++}
+ warn join(" ", @ARGV), "\n" if $ENV{FS_DEBUG};
+ exec(@ARGV) or die("exec(@ARGV)");
+ 

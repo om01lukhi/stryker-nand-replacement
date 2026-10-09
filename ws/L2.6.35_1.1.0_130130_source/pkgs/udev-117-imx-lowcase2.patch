@@ -1,0 +1,14 @@
+diff --exclude CVS -uNr udev-117/etc/udev/ltib/10-imx.rules udev-117.modified/etc/udev/ltib/10-imx.rules
+--- udev-117/etc/udev/ltib/10-imx.rules	2009-02-23 10:34:30.000000000 +0800
++++ udev-117.modified/etc/udev/ltib/10-imx.rules	2009-02-23 10:33:26.000000000 +0800
+@@ -2,8 +2,8 @@
+ SUBSYSTEM=="input" SYSFS{name}=="mxckpd",     SYMLINK+="input/keyboard0"
+ SUBSYSTEM=="input" SYSFS{name}=="mxc_ts",     SYMLINK+="input/ts0"
+ SUBSYSTEM=="input" KERNEL=="event*" SYSFS{name}=="imx_adc_ts", SYMLINK+="input/ts0"
+-SUBSYSTEM=="input" SYSFS{name}=="MPR084",     SYMLINK+="input/keyboard0"
+-SUBSYSTEM=="input" SYSFS{name}=="TSC2007",    SYMLINK+="input/ts0"
++SUBSYSTEM=="input" SYSFS{name}=="mpr084",     SYMLINK+="input/keyboard0"
++SUBSYSTEM=="input" SYSFS{name}=="tsc2007",    SYMLINK+="input/ts0"
+ 
+ # The long class name gets cut off to be mc13783_connectiv in 
+ # /sys/class/mc13783_connectivity/mc13783_connectivit

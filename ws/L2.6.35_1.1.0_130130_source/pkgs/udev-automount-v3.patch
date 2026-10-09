@@ -1,0 +1,17 @@
+--- /dev/null	2008-07-01 14:50:01.000000000 -0600
++++ udev-117/etc/udev/ltib/65-automount.rules	2008-12-09 13:51:11.000000000 -0700
+@@ -0,0 +1,14 @@
++# /dev/sd* rules
++ACTION=="add", KERNEL=="sd[a-z]*", RUN+="/bin/mkdir -p /mnt/%k"
++ACTION=="add", KERNEL=="sd[a-z]*", PROGRAM=="/lib/udev/vol_id -t %N", RESULT=="vfat", RUN+="/bin/mount -t vfat -o rw,noauto,flush,quiet,nodev,nosuid,noexec,noatime,dmask=000,fmask=111 /dev/%k /mnt/%k", OPTIONS="last_rule"
++ACTION=="add", KERNEL=="sd[a-z]*", RESULT!="", RUN+="/bin/mount -t $RESULT -o rw,noauto,sync,noexec,nodev,noatime /dev/%k /mnt/%k", OPTIONS="last_rule"
++ACTION=="remove", KERNEL=="sd[a-z]*", RUN+="/bin/umount -l /mnt/%k"
++ACTION=="remove", KERNEL=="sd[a-z]*", RUN+="/bin/rmdir /mnt/%k", OPTIONS="last_rule"
++
++# /dev/mmc* rules
++ACTION=="add", KERNEL=="mmcblk[0-9]*", RUN+="/bin/mkdir -p /mnt/%k"
++ACTION=="add", KERNEL=="mmcblk[0-9]*", PROGRAM=="/lib/udev/vol_id -t %N", RESULT=="vfat", RUN+="/bin/mount -t vfat -o rw,noauto,flush,quiet,nodev,nosuid,noexec,noatime,dmask=000,fmask=111 /dev/%k /mnt/%k", OPTIONS="last_rule"
++ACTION=="add", KERNEL=="mmcblk[0-9]*", RESULT!="", RUN+="/bin/mount -t $RESULT -o rw,noauto,sync,noexec,nodev,noatime /dev/%k /mnt/%k", OPTIONS="last_rule"
++ACTION=="remove", KERNEL=="mmcblk[0-9]*", RUN+="/bin/umount -l /mnt/%k"
++ACTION=="remove", KERNEL=="mmcblk[0-9]*", RUN+="/bin/rmdir /mnt/%k", OPTIONS="last_rule"
++

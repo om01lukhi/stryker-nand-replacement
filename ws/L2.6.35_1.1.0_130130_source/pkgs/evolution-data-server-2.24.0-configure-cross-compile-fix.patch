@@ -1,0 +1,88 @@
+--- configure~	2008-09-21 21:25:52.000000000 -0500
++++ configure	2009-04-09 18:34:33.000000000 -0500
+@@ -25174,85 +25174,6 @@
+ 
+ 
+ 
+-CFLAGS="$CFLAGS -I$srcdir"
+-
+-{ echo "$as_me:$LINENO: checking preferred charset formats for system iconv" >&5
+-echo $ECHO_N "checking preferred charset formats for system iconv... $ECHO_C" >&6; }
+-if test "$cross_compiling" = yes; then
+-  { { echo "$as_me:$LINENO: error: cannot run test program while cross compiling
+-See \`config.log' for more details." >&5
+-echo "$as_me: error: cannot run test program while cross compiling
+-See \`config.log' for more details." >&2;}
+-   { (exit 1); exit 1; }; }
+-else
+-  cat >conftest.$ac_ext <<_ACEOF
+-/* confdefs.h.  */
+-_ACEOF
+-cat confdefs.h >>conftest.$ac_ext
+-cat >>conftest.$ac_ext <<_ACEOF
+-/* end confdefs.h.  */
+-
+-#define CONFIGURE_IN
+-#include "iconv-detect.c"
+-
+-_ACEOF
+-rm -f conftest$ac_exeext
+-if { (ac_try="$ac_link"
+-case "(($ac_try" in
+-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+-  *) ac_try_echo=$ac_try;;
+-esac
+-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+-  (eval "$ac_link") 2>&5
+-  ac_status=$?
+-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+-  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
+-  { (case "(($ac_try" in
+-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+-  *) ac_try_echo=$ac_try;;
+-esac
+-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+-  (eval "$ac_try") 2>&5
+-  ac_status=$?
+-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+-  (exit $ac_status); }; }; then
+-
+-	{ echo "$as_me:$LINENO: result: found" >&5
+-echo "${ECHO_T}found" >&6; }
+-
+-else
+-  echo "$as_me: program exited with status $ac_status" >&5
+-echo "$as_me: failed program was:" >&5
+-sed 's/^/| /' conftest.$ac_ext >&5
+-
+-( exit $ac_status )
+-
+-	{ echo "$as_me:$LINENO: result: not found" >&5
+-echo "${ECHO_T}not found" >&6; }
+-	{ echo "$as_me:$LINENO: WARNING:
+-	*** The iconv-detect program was unable to determine the
+-	*** preferred charset formats recognized by your system
+-	*** iconv library. It is suggested that you install a
+-	*** working iconv library such as the one found at
+-	*** ftp://ftp.gnu.org/pub/gnu/libiconv
+-	" >&5
+-echo "$as_me: WARNING:
+-	*** The iconv-detect program was unable to determine the
+-	*** preferred charset formats recognized by your system
+-	*** iconv library. It is suggested that you install a
+-	*** working iconv library such as the one found at
+-	*** ftp://ftp.gnu.org/pub/gnu/libiconv
+-	" >&2;}
+-
+-fi
+-rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
+-fi
+-
+-
+-
+-CFLAGS="$save_CFLAGS"
+-LIBS="$save_LIBS"
+-
+ { echo "$as_me:$LINENO: checking for nl_langinfo (CODESET)" >&5
+ echo $ECHO_N "checking for nl_langinfo (CODESET)... $ECHO_C" >&6; }
+ cat >conftest.$ac_ext <<_ACEOF

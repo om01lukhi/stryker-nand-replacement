@@ -1,0 +1,36 @@
+diff --exclude CVS -uNr lkc-1.4/mconf.c lkc-1.4.modified/mconf.c
+--- lkc-1.4/mconf.c	2008-03-11 16:45:34.000000000 +0000
++++ lkc-1.4.modified/mconf.c	2008-03-11 14:53:12.000000000 +0000
+@@ -1029,6 +1029,10 @@
+ 	conf_read(NULL);
+ 	menu_assign_ids();
+ 
++    sym = sym_lookup("CONFIG_TITLE", 0);
++    sym_calc_value(sym);
++    rootmenu.prompt->text = sym_get_string_value(sym);
++
+ 	//sym = sym_lookup("CONFIGURATION_NAME", 0);
+ 	//sym_calc_value(sym);
+ 	//snprintf(menu_backtitle, 128, "%s Configuration",
+diff --exclude CVS -uNr lkc-1.4/zconf.y lkc-1.4.modified/zconf.y
+--- lkc-1.4/zconf.y	2008-03-11 16:45:34.000000000 +0000
++++ lkc-1.4.modified/zconf.y	2008-03-11 15:06:14.000000000 +0000
+@@ -499,7 +499,7 @@
+ 	sym_init();
+ 	menu_init();
+ 	modules_sym = sym_lookup("MODULES", 0);
+-	rootmenu.prompt = menu_add_prop(P_MENU, "Configuration", NULL, NULL);
++	rootmenu.prompt = menu_add_prop(P_MENU, "LTIB Configuration", NULL, NULL);
+ 
+ 	//zconfdebug = 1;
+ 	zconfparse();
+@@ -514,9 +514,6 @@
+         }
+ 
+ 	sym_change_count = 1;
+-	sym = sym_lookup("CONFIG_TITLE", 0);
+-	sym_calc_value(sym);
+-	rootmenu.prompt->text = sym_get_string_value(sym);
+ }
+ 
+ const char *zconf_tokenname(int token)

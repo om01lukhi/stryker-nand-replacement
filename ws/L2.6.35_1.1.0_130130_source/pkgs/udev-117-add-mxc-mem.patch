@@ -1,0 +1,9 @@
+diff --exclude CVS -uNr udev-117/etc/udev/ltib/10-imx.rules udev-117.modified/etc/udev/ltib/10-imx.rules
+--- udev-117/etc/udev/ltib/10-imx.rules	2009-04-20 15:57:45.000000000 +0800
++++ udev-117.modified/etc/udev/ltib/10-imx.rules	2009-04-20 15:57:22.000000000 +0800
+@@ -8,3 +8,5 @@
+ # The long class name gets cut off to be mc13783_connectiv in 
+ # /sys/class/mc13783_connectivity/mc13783_connectivit
+ KERNEL=="mc13783_connectiv*",  NAME="mc13783_connectivity"
++# Anyone has readonly permission to IIM device file
++KERNEL=="mxc_iim", NAME="%k", MODE="0444", SYMLINK+="mxc_mem"

@@ -1,0 +1,11 @@
+diff -uNr udev-117/etc/udev/ltib/10-imx.rules udev-117.modified/etc/udev/ltib/10-imx.rules
+--- udev-117/etc/udev/ltib/10-imx.rules	2010-04-09 15:14:20.000000000 +0800
++++ udev-117.modified/etc/udev/ltib/10-imx.rules	2010-04-09 15:18:58.000000000 +0800
+@@ -13,3 +13,7 @@
+ # Anyone has readonly permission to IIM device file
+ KERNEL=="mxc_iim", NAME="%k", MODE="0444", SYMLINK+="mxc_mem"
+ KERNEL=="mxs_viim", NAME="%k", MODE="0444", SYMLINK+="mxc_mem"
++KERNEL=="mxc_ipu", NAME="%k", MODE="0666"
++KERNEL=="fb0", NAME="%k", MODE="0666"
++KERNEL=="fb1", NAME="%k", MODE="0666"
++KERNEL=="fb2", NAME="%k", MODE="0666"

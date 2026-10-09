@@ -1,0 +1,140 @@
+diff --exclude CVS -uNr hotplug-2004_03_29/Makefile hotplug-2004_03_29.modified/Makefile
+--- hotplug-2004_03_29/Makefile	2003-06-27 19:13:10.000000000 -0500
++++ hotplug-2004_03_29.modified/Makefile	2008-09-25 16:45:59.000000000 -0500
+@@ -20,7 +20,7 @@
+ TOPDIR=/
+ DIRS= 	/sbin \
+ 	/etc/hotplug \
+-	/etc/init.d/ \
++	/etc/rc.d/init.d/ \
+ 	/var/run/usb \
+ 	/usr/share/man/man8
+ 
+@@ -91,7 +91,7 @@
+ 	for F in etc/hotplug/{blacklist,usb.{user,hand,dist}map} ; do \
+ 	    ${INSTALL_DATA} $$F $(etcdir)/hotplug ; \
+ 	    done
+-	${INSTALL_SCRIPT} -D etc/rc.d/init.d/hotplug $(etcdir)/init.d/hotplug
++	${INSTALL_SCRIPT} -D etc/rc.d/init.d/hotplug $(etcdir)/rc.d/init.d/hotplug
+ 	$(INSTALL_DATA) -D hotplug.8  $(mandir)/man8/hotplug.8
+ 	$(INSTALL) -d $(prefix)/var/log/hotplug $(prefix)/var/run
+ 	$(INSTALL) -d -m 700 $(prefix)/var/run/usb
+diff --exclude CVS -uNr hotplug-2004_03_29/etc/hotplug/dasd.agent hotplug-2004_03_29.modified/etc/hotplug/dasd.agent
+--- hotplug-2004_03_29/etc/hotplug/dasd.agent	2002-08-08 05:05:17.000000000 -0500
++++ hotplug-2004_03_29.modified/etc/hotplug/dasd.agent	2008-09-25 16:45:21.000000000 -0500
+@@ -38,7 +38,7 @@
+ . hotplug.functions
+ 
+ test -d /dev/dasd -a -d /dev/labels || {
+-    debug_mesg "/etc/init.d/boot.dasd_devfs_compat is not started.
++    debug_mesg "/etc/rc.d/init.d/boot.dasd_devfs_compat is not started.
+ ignoring $ACTION  $DEVNO  $MAJOR $MINOR  $DASDNAME"
+     exit 0
+ }
+diff --exclude CVS -uNr hotplug-2004_03_29/etc/hotplug/input.rc hotplug-2004_03_29.modified/etc/hotplug/input.rc
+--- hotplug-2004_03_29/etc/hotplug/input.rc	2004-03-26 16:34:34.000000000 -0600
++++ hotplug-2004_03_29.modified/etc/hotplug/input.rc	2008-09-25 16:45:21.000000000 -0500
+@@ -4,7 +4,7 @@
+ #		that have drivers compiled in kernel
+ #		Currently stopping is not supported
+ #
+-# Best invoked via /etc/init.d/hotplug or equivalent, with
++# Best invoked via /etc/rc.d/init.d/hotplug or equivalent, with
+ # writable /tmp, /usr mounted, and syslogging active.
+ #
+ 
+@@ -13,8 +13,8 @@
+ PROCDIR=/proc/bus/input
+ 
+ # source function library
+-if [ -f /etc/init.d/functions ]; then
+-	. /etc/init.d/functions
++if [ -f /etc/rc.d/init.d/functions ]; then
++	. /etc/rc.d/init.d/functions
+ elif [ -f /etc/rc.d/init.d/functions ]; then
+ 	. /etc/rc.d/init.d/functions
+ fi
+diff --exclude CVS -uNr hotplug-2004_03_29/etc/hotplug/usb.rc hotplug-2004_03_29.modified/etc/hotplug/usb.rc
+--- hotplug-2004_03_29/etc/hotplug/usb.rc	2004-03-29 13:34:30.000000000 -0600
++++ hotplug-2004_03_29.modified/etc/hotplug/usb.rc	2008-09-25 16:45:21.000000000 -0500
+@@ -5,7 +5,7 @@
+ #
+ # $Id: usb.rc,v 1.22 2004/03/27 07:44:39 ukai Exp $
+ #
+-# Best invoked via /etc/init.d/hotplug or equivalent, with
++# Best invoked via /etc/rc.d/init.d/hotplug or equivalent, with
+ # writable /tmp, /usr mounted, and syslogging active.
+ #
+ # Bus management is basically unrelated to runlevel changes; it
+diff --exclude CVS -uNr hotplug-2004_03_29/etc/rc.d/init.d/hotplug hotplug-2004_03_29.modified/etc/rc.d/init.d/hotplug
+--- hotplug-2004_03_29/etc/rc.d/init.d/hotplug	2003-03-27 18:25:03.000000000 -0600
++++ hotplug-2004_03_29.modified/etc/rc.d/init.d/hotplug	2008-09-25 16:45:21.000000000 -0500
+@@ -14,8 +14,8 @@
+ PATH=/sbin:/bin:/usr/sbin:/usr/bin
+ 
+ # source function library
+-if [ -f /etc/init.d/functions ]; then
+-	. /etc/init.d/functions
++if [ -f /etc/rc.d/init.d/functions ]; then
++	. /etc/rc.d/init.d/functions
+ elif [ -f /etc/rc.d/init.d/functions ]; then
+ 	. /etc/rc.d/init.d/functions
+ fi
+diff --exclude CVS -uNr hotplug-2004_03_29/hotplug.8 hotplug-2004_03_29.modified/hotplug.8
+--- hotplug-2004_03_29/hotplug.8	2004-03-11 17:30:23.000000000 -0600
++++ hotplug-2004_03_29.modified/hotplug.8	2008-09-25 16:45:21.000000000 -0500
+@@ -7,7 +7,7 @@
+ .I NAME
+ ]
+ .P
+-.B /etc/init.d/hotplug
++.B /etc/rc.d/init.d/hotplug
+ [start|stop|status|restart]
+ .SH "DESCRIPTION"
+ .B hotplug
+@@ -42,7 +42,7 @@
+ .B hotplug
+ agents aren't necessarily called only by the kernel though.  While the OS
+ is initializing, the "cold-plugging" case, the hotplug script in
+-.I /etc/init.d/hotplug
++.I /etc/rc.d/init.d/hotplug
+ is invoked to make sure that all device connected at boot are properly
+ configured, applying the same rules as if they were connected later.
+ .P
+@@ -78,7 +78,7 @@
+ /etc/hotplug/NAME*               subsystem-specific files, for agents
+ /etc/hotplug/NAME/DRIVER         driver setup scripts, invoked by agents
+ /etc/hotplug/usb/DRIVER.usermap  depmod data for user-mode drivers
+-/etc/init.d/hotplug              hotplug system service script
++/etc/rc.d/init.d/hotplug              hotplug system service script
+ .fi
+ .LP
+ .SH "SEE ALSO"
+diff --exclude CVS -uNr hotplug-2004_03_29/hotplug.spec hotplug-2004_03_29.modified/hotplug.spec
+--- hotplug-2004_03_29/hotplug.spec	2004-03-29 16:58:28.000000000 -0600
++++ hotplug-2004_03_29.modified/hotplug.spec	2008-09-25 16:45:21.000000000 -0500
+@@ -41,7 +41,7 @@
+ 
+ %files
+ %defattr(-,root,root)
+-/etc/init.d/*
++/etc/rc.d/init.d/*
+ /etc/hotplug/*
+ /etc/hotplug.d/*
+ %dir /var/run/usb
+@@ -59,13 +59,13 @@
+ # Uncomment this out if we find that we need to restart the system when
+ # we have loaded a new copy of the package.
+ #if test -r /var/lock/subsys/hotplug ; then
+-#	/etc/init.d/hotplug restart >&2
++#	/etc/rc.d/init.d/hotplug restart >&2
+ #fi
+ 
+ 
+ %preun
+ if [ "$1" = 0 ] ; then
+-	/etc/init.d/hotplug stop >&2
++	/etc/rc.d/init.d/hotplug stop >&2
+ 	/sbin/chkconfig --del hotplug
+ fi
+ 

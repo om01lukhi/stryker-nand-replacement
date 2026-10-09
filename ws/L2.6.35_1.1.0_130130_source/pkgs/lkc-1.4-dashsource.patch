@@ -1,0 +1,120 @@
+20071016, Stuart Hughes <stuarth at freescale dot com>
+
+This adds the term '-source', this behaves like source, but if
+the file is not found, then it's not fatal.  This allows including
+optional configuration files.
+
+diff --exclude CVS -uNr lkc-1.4/lkc.h lkc-1.4.modified/lkc.h
+--- lkc-1.4/lkc.h	2007-10-16 15:09:57.000000000 +0100
++++ lkc-1.4.modified/lkc.h	2007-10-16 15:06:29.000000000 +0100
+@@ -33,7 +33,7 @@
+ void zconf_starthelp(void);
+ FILE *zconf_fopen(const char *name);
+ void zconf_initscan(const char *name);
+-void zconf_nextfile(const char *name);
++void zconf_nextfile(const char *name, int fatal);
+ int zconf_lineno(void);
+ char *zconf_curname(void);
+ 
+diff --exclude CVS -uNr lkc-1.4/zconf.l lkc-1.4.modified/zconf.l
+--- lkc-1.4/zconf.l	2003-05-26 19:21:36.000000000 +0100
++++ lkc-1.4.modified/zconf.l	2007-10-16 15:08:38.000000000 +0100
+@@ -92,6 +92,7 @@
+ 	"menu"			BEGIN(PARAM); return T_MENU;
+ 	"endmenu"		BEGIN(PARAM); return T_ENDMENU;
+ 	"source"		BEGIN(PARAM); return T_SOURCE;
++	"-source"		BEGIN(PARAM); return T_DASHSOURCE;
+ 	"choice"		BEGIN(PARAM); return T_CHOICE;
+ 	"endchoice"		BEGIN(PARAM); return T_ENDCHOICE;
+ 	"comment"		BEGIN(PARAM); return T_COMMENT;
+@@ -299,18 +300,25 @@
+ 	current_file->flags = FILE_BUSY;
+ }
+ 
+-void zconf_nextfile(const char *name)
++void zconf_nextfile(const char *name, int fatal)
+ {
+-	struct file *file = file_lookup(name);
+-	struct buffer *buf = malloc(sizeof(*buf));
+-	memset(buf, 0, sizeof(*buf));
++	struct file *file;
++	struct buffer *buf;
++    FILE *fp;
+ 
+-	current_buf->state = YY_CURRENT_BUFFER;
+-	yyin = zconf_fopen(name);
+-	if (!yyin) {
++	fp = zconf_fopen(name);
++	if (!(fp = zconf_fopen(name))) {
+ 		printf("%s:%d: can't open file \"%s\"\n", zconf_curname(), zconf_lineno(), name);
+-		exit(1);
+-	}
++		if(fatal)
++			exit(1);
++		return;
++	}
++    yyin = fp;
++    file = file_lookup(name);
++    buf = malloc(sizeof(*buf));
++    memset(buf, 0, sizeof(*buf));
++	current_buf->state = YY_CURRENT_BUFFER;
++
+ 	yy_switch_to_buffer(yy_create_buffer(yyin, YY_BUF_SIZE));
+ 	buf->parent = current_buf;
+ 	current_buf = buf;
+diff --exclude CVS -uNr lkc-1.4/zconf.y lkc-1.4.modified/zconf.y
+--- lkc-1.4/zconf.y	2007-10-16 15:09:57.000000000 +0100
++++ lkc-1.4.modified/zconf.y	2007-10-16 15:04:51.000000000 +0100
+@@ -27,7 +27,7 @@
+ 
+ #define YYERROR_VERBOSE
+ %}
+-%expect 40
++%expect 43
+ 
+ %union
+ {
+@@ -42,6 +42,7 @@
+ %token T_MENU
+ %token T_ENDMENU
+ %token T_SOURCE
++%token T_DASHSOURCE
+ %token T_CHOICE
+ %token T_ENDCHOICE
+ %token T_COMMENT
+@@ -81,6 +82,7 @@
+ 
+ %type <string> prompt
+ %type <string> source
++%type <string> dashsource
+ %type <symbol> symbol
+ %type <expr> expr
+ %type <expr> if_expr
+@@ -111,6 +113,7 @@
+ 	| config_stmt
+ 	| menuconfig_stmt
+ 	| source_stmt
++	| dashsource_stmt
+ 	| nl_or_eof
+ ;
+ 
+@@ -382,7 +385,18 @@
+ 
+ source_stmt: source
+ {
+-	zconf_nextfile($1);
++	zconf_nextfile($1, 1);
++};
++
++dashsource: T_DASHSOURCE prompt T_EOL
++{
++	$$ = $2;
++	printd(DEBUG_PARSE, "%s:%d:dashsource %s\n", zconf_curname(), zconf_lineno(), $2);
++};
++
++dashsource_stmt: dashsource
++{
++	zconf_nextfile($1, 0);
+ };
+ 
+ /* comment entry */

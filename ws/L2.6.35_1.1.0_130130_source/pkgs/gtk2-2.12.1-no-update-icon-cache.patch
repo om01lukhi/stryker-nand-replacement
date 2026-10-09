@@ -1,0 +1,35 @@
+20080401, Stuart Hughes: <stuarth at freescale dot com>
+
+gtk2 relies on the host gtk-update-icon-cache to build an updated
+gtkbuiltincache.h.  Unfortunately the semantics have not remained the same.  On
+FC4 you get an empty file, on FC5 you get an error.  However there is a valid
+default gtkbuiltincache.h in the source tree, so by disabling this altogether
+the right thing should happen on the target.
+
+The symptom of the failure on FC5 was:
+
+make[3]: Leaving directory `/home/seh/ltib_bsps/savannah/rpm/BUILD/gtk+-2.12.1/gtk'
+/usr/bin/gtk-update-icon-cache --force --ignore-theme-index             \
+   --source builtin_icons stock-icons > gtkbuiltincache.h.tmp &&        \
+mv gtkbuiltincache.h.tmp gtkbuiltincache.h
+No theme index file in '--force'.
+If you really want to create an icon cache here, use --ignore-theme-index.
+make[2]: *** [gtkbuiltincache.h] Error 1
+
+
+diff --exclude CVS -uNr gtk+-2.12.1/gtk/Makefile.in gtk+-2.12.1.modified/gtk/Makefile.in
+--- gtk+-2.12.1/gtk/Makefile.in	2007-10-17 05:00:12.000000000 +0100
++++ gtk+-2.12.1.modified/gtk/Makefile.in	2008-04-01 17:41:50.000000000 +0100
+@@ -3130,9 +3130,9 @@
+ 
+ gtkbuiltincache.h: @REBUILD@ stamp-icons
+ 	$(MAKE) $(AM_MAKEFLAGS) gtk-update-icon-cache$(EXEEXT)
+-	$(gtk_update_icon_cache_program) --force --ignore-theme-index		\
+-	   --source builtin_icons stock-icons > gtkbuiltincache.h.tmp &&        \
+-	mv gtkbuiltincache.h.tmp gtkbuiltincache.h
++	#$(gtk_update_icon_cache_program) \
++	#   --source builtin_icons stock-icons > gtkbuiltincache.h.tmp &&        \
++	#mv gtkbuiltincache.h.tmp gtkbuiltincache.h
+ 
+ install-data-local:
+ # Tell versions [3.59,3.63) of GNU make to not export all variables.

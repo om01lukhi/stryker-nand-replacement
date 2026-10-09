@@ -1,0 +1,30 @@
+Steve Papacharalambous <stevep@freescale.com> 04 September 2008:
+
+This patch fixes the following compiler error:
+
+[snip]
++ gcc -O2 -march=i686 -lpthread mux_server.c -o mux_server
+mux_server.c: In function `tcp_listen_channel':
+mux_server.c:656: parse error before `int'
+mux_server.c:657: `fd' undeclared (first use in this function)
+mux_server.c:657: (Each undeclared identifier is reported only once
+mux_server.c:657: for each function it appears in.)
+[/snip]
+==============================================================================
+--- mux_sever-1.0/mux_server.c.orig	Thu Sep  4 14:39:40 2008
++++ mux_sever-1.0/mux_server.c	Thu Sep  4 14:39:57 2008
+@@ -648,12 +648,13 @@
+ 	struct sockaddr_in sockaddr;
+ 	struct iochan *c;
+ 	int num_bind_retries = 0;
++	int fd;
+ 	int rc;
+ 
+ 	if (verbose)
+ 		printf("tcp_listen_channel %d %d\n",port,stream_id);
+ 
+-	int fd  = socket(PF_INET, SOCK_STREAM, 0);
++	fd  = socket(PF_INET, SOCK_STREAM, 0);
+ 	if (fd < 0) {
+ 		fatal("socket() failed for stream %d", stream_id);
+ 	}

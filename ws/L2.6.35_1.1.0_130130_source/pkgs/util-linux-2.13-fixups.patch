@@ -1,0 +1,167 @@
+20071009, Stuart Hughes <stuarth at freescale dot com>
+
+This patch fixes up some compatibility issues found with older/new
+toolchains and with uClibc.
+
+
+diff --exclude CVS -uNr util-linux-ng-2.13/login-utils/agetty.c util-linux-ng-2.13.modified/login-utils/agetty.c
+--- util-linux-ng-2.13/login-utils/agetty.c	2007-10-09 13:33:06.000000000 +0100
++++ util-linux-ng-2.13.modified/login-utils/agetty.c	2007-10-08 16:40:21.000000000 +0100
+@@ -971,7 +971,7 @@
+ 
+ 		  case 'o':
+ 		   {
+-		     char domainname[HOST_NAME_MAX+1];
++		     char domainname[HOSTNAME_LENGTH+1];
+ #ifdef HAVE_GETDOMAINNAME
+ 		     if (getdomainname(domainname, sizeof(domainname)))
+ #endif
+@@ -984,7 +984,7 @@
+ 		  case 'O':
+ 		   {
+ 			char *dom = "unknown_domain";
+-			char host[HOST_NAME_MAX + 1];
++			char host[HOSTNAME_LENGTH + 1];
+ 			struct addrinfo hints, *info = NULL;
+ 
+ 			memset(&hints, 0, sizeof(hints));
+@@ -1079,7 +1079,7 @@
+     }
+ #endif
+     {
+-	char hn[HOST_NAME_MAX+1];
++	char hn[HOSTNAME_LENGTH+1];
+ 	if (gethostname(hn, sizeof(hn)) == 0)
+ 	    write(1, hn, strlen(hn));
+     }
+diff --exclude CVS -uNr util-linux-ng-2.13/login-utils/checktty.c util-linux-ng-2.13.modified/login-utils/checktty.c
+--- util-linux-ng-2.13/login-utils/checktty.c	2007-04-25 13:43:38.000000000 +0100
++++ util-linux-ng-2.13.modified/login-utils/checktty.c	2007-10-08 16:35:32.000000000 +0100
+@@ -31,6 +31,11 @@
+ #include "login.h"
+ #include "xstrncpy.h"
+ 
++#ifndef AI_ADDRCONFIG
++# define AI_ADDRCONFIG  0x0020  /* Use configuration of this host to choose
++                   returned address type..  */
++#endif
++
+ static gid_t mygroups[NGROUPS];
+ static int   num_groups;
+ 
+diff --exclude CVS -uNr util-linux-ng-2.13/schedutils/taskset.c util-linux-ng-2.13.modified/schedutils/taskset.c
+--- util-linux-ng-2.13/schedutils/taskset.c	2007-08-13 11:39:47.000000000 +0100
++++ util-linux-ng-2.13.modified/schedutils/taskset.c	2007-10-08 17:07:04.000000000 +0100
+@@ -26,7 +26,9 @@
+  * Copyright (C) 2004 Robert Love
+  */
+ 
++#ifndef _GNU_SOURCE
+ #define _GNU_SOURCE
++#endif
+ 
+ #include <stdio.h>
+ #include <stdlib.h>
+@@ -403,8 +405,8 @@
+ 	new_mask_byte_size = bitmask_nbytes(new_mask);
+ 
+ 	if (pid) {
+-		if (sched_getaffinity(pid, cur_mask_byte_size,
+-					(cpu_set_t *)cur_mask->maskp) < 0) {
++		if (syscall(SYS_sched_getaffinity, pid, cur_mask_byte_size,
++					(void *)cur_mask->maskp) < 0) {
+ 			perror("sched_getaffinity");
+ 			fprintf(stderr, "failed to get pid %d's affinity\n",
+ 				pid);
+@@ -436,15 +438,15 @@
+ 		return 1;
+ 	}
+ 
+-	if (sched_setaffinity(pid, new_mask_byte_size,
+-					(cpu_set_t *) new_mask->maskp) < 0) {
++	if (syscall(SYS_sched_setaffinity, pid, new_mask_byte_size,
++					(void *)new_mask->maskp) < 0) {
+ 		perror("sched_setaffinity");
+ 		fprintf(stderr, "failed to set pid %d's affinity.\n", pid);
+ 		return 1;
+ 	}
+ 
+-	if (sched_getaffinity(pid, cur_mask_byte_size,
+-					(cpu_set_t *)cur_mask->maskp) < 0) {
++	if (syscall(SYS_sched_getaffinity, pid, cur_mask_byte_size,
++					(void *)cur_mask->maskp) < 0) {
+ 		perror("sched_getaffinity");
+ 		fprintf(stderr, "failed to get pid %d's affinity.\n", pid);
+ 		return 1;
+diff --exclude CVS -uNr util-linux-ng-2.13/sys-utils/setarch.c util-linux-ng-2.13.modified/sys-utils/setarch.c
+--- util-linux-ng-2.13/sys-utils/setarch.c	2007-10-09 13:33:06.000000000 +0100
++++ util-linux-ng-2.13.modified/sys-utils/setarch.c	2007-10-08 17:34:39.000000000 +0100
+@@ -28,6 +28,8 @@
+ #  define _GNU_SOURCE
+ #endif
+ 
++#include <features.h>                    /* pull in __UCLIBC__ if defined */
++
+ #include <syscall.h>
+ #include <linux/personality.h>
+ #include <unistd.h>
+@@ -61,6 +63,19 @@
+ static void __attribute__((__noreturn__))
+ show_help(void)
+ {
++/* adapted from http://140.211.166.42/lists/uclibc/2004-July/009359.html */
++#ifdef __UCLIBC__
++  extern const char *__progname;
++  char *arg, *program_invocation_short_name;
++
++  arg = strrchr (__progname, '/');
++  if (arg) {
++    program_invocation_short_name = arg + 1;
++  } else {
++    program_invocation_short_name = __progname;
++  }
++#endif
++
+   int f;
+   const char *p = program_invocation_short_name;
+ 
+@@ -80,6 +95,19 @@
+ static void __attribute__((__noreturn__))
+ show_usage(const char *s)
+ {
++/* adapted from http://140.211.166.42/lists/uclibc/2004-July/009359.html */
++#ifdef __UCLIBC__
++  extern const char *__progname;
++  char *arg, *program_invocation_short_name;
++
++  arg = strrchr (__progname, '/');
++  if (arg) {
++    program_invocation_short_name = arg + 1;
++  } else {
++    program_invocation_short_name = __progname;
++  }
++#endif
++
+   const char *p = program_invocation_short_name;
+ 
+   if (!*p)
+@@ -180,6 +208,19 @@
+   unsigned long options = 0;
+   int verbose = 0;
+ 
++/* adapted from http://140.211.166.42/lists/uclibc/2004-July/009359.html */
++#ifdef __UCLIBC__
++  extern const char *__progname;
++  char *arg, *program_invocation_short_name;
++
++  arg = strrchr (__progname, '/');
++  if (arg) {
++    program_invocation_short_name = arg + 1;
++  } else {
++    program_invocation_short_name = __progname;
++  }
++#endif
++
+   setlocale(LC_ALL, "");
+   bindtextdomain(PACKAGE, LOCALEDIR);
+   textdomain(PACKAGE);

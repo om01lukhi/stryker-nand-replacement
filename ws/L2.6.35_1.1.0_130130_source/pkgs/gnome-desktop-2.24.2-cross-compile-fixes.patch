@@ -1,0 +1,28 @@
+diff -ruN gnome-desktop-2.24.2/configure gnome-desktop-2.24.2.modified/configure
+--- gnome-desktop-2.24.2/configure	2008-11-25 21:09:34.000000000 +0800
++++ gnome-desktop-2.24.2.modified/configure	2009-07-08 11:26:45.963861882 +0800
+@@ -25119,13 +25119,6 @@
+   gdu_cv_have_gdu=no
+ fi
+ 
+-if test "$gdu_cv_have_gdu" = "yes"; then
+-	:
+-else
+-	{ { $as_echo "$as_me:$LINENO: error: gnome-doc-utils >= $gdu_cv_version_required not found" >&5
+-$as_echo "$as_me: error: gnome-doc-utils >= $gdu_cv_version_required not found" >&2;}
+-   { (exit 1); exit 1; }; }
+-fi
+ 
+ 
+ 
+diff -ruN gnome-desktop-2.24.2/Makefile.in gnome-desktop-2.24.2.modified/Makefile.in
+--- gnome-desktop-2.24.2/Makefile.in	2009-07-08 11:26:01.923863449 +0800
++++ gnome-desktop-2.24.2.modified/Makefile.in	2009-07-08 11:22:55.423862145 +0800
+@@ -290,7 +290,6 @@
+ 	libgnome-desktop 	\
+ 	gnome-about 		\
+ 	pixmaps			\
+-	desktop-docs		\
+ 	docs			\
+ 	man
+ 

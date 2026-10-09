@@ -1,0 +1,11 @@
+--- jpeg-6b/ltconfig	1998-03-25 23:25:39.000000000 +0800
++++ jpeg-6b.new/ltconfig	2010-09-16 15:21:27.000000000 +0800
+@@ -307,6 +307,8 @@
+ host_vendor=`echo $host | sed 's/^\([^-]*\)-\([^-]*\)-\(.*\)$/\2/'`
+ host_os=`echo $host | sed 's/^\([^-]*\)-\([^-]*\)-\(.*\)$/\3/'`
+ 
++host_os="linux-gnu"
++
+ case "$host_os" in
+ aix3*)
+   # AIX sometimes has problems with the GCC collect2 program.  For some

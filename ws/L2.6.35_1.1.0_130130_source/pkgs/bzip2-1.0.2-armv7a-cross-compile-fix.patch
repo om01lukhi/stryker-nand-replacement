@@ -1,0 +1,11 @@
+--- bzip2-1.0.2/Makefile	2009-11-02 13:09:32.000000000 +0800
++++ bzip2-1.0.2.modified/Makefile	2009-11-02 13:08:54.000000000 +0800
+@@ -9,7 +9,7 @@
+ 
+ # Suitably paranoid flags to avoid bugs in gcc-2.7
+ BIGFILES=-D_FILE_OFFSET_BITS=64
+-CFLAGS=-Wall -Winline -O2 -fomit-frame-pointer -fno-strength-reduce $(BIGFILES)
++CFLAGS=-Wall -Winline -O2 -fomit-frame-pointer -fno-strength-reduce -fPIC $(BIGFILES)
+ 
+ # Where you want it installed when you do 'make install'
+ PREFIX=/usr

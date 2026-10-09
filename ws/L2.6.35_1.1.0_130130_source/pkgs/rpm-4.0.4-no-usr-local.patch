@@ -1,0 +1,16 @@
+20080410, Stuart Hughes <stuarth at freescale dot com>
+
+This is a work around to the invalid state of some host distros
+(ones having /usr/local/lib/libbz2.a and not the equivalient .so)
+
+--- rpm-4.0.4/configure 2008-04-10 05:49:06.000000000 -0500
++++ rpm-4.0.4.modified/configure        2008-04-10 05:41:43.000000000 -0500
+@@ -7580,7 +7580,7 @@
+
+ dirs=$prefix
+ if test "$cross_compiling" != "yes"; then
+-  dirs="$dirs /usr/local"
++  dirs="$dirs"
+ fi
+ for dir in $dirs
+ do

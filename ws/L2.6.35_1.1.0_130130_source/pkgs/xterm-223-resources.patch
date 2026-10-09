@@ -1,0 +1,14 @@
+--- xterm-223/XTerm.ad.redhat-resources	2006-06-24 16:34:45.000000000 +0200
++++ xterm-223/XTerm.ad	2007-01-08 18:13:38.000000000 +0100
+@@ -186,3 +186,11 @@
+ !
+ ! Alternatively,
+ !*on2Clicks: regex [[:alpha:]]+://([[:alnum:]!#+,./=?@_~-]|(%[[:xdigit:]][[:xdigit:]]))+
++
++! Red Hat Defaults:
++*VT100*eightBitInput: 0
++*VT100*metaSendsEscape: 1
++*VT100*backarrowKey:  0
++*VT100*scrollBar:     1
++*VT100*utf8Title:     1
++*VT100*modifyFunctionKeys: 0

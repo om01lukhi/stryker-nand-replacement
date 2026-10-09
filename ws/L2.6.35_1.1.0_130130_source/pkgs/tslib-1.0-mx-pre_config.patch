@@ -1,0 +1,24 @@
+diff -uprN tslib-1.0_orig/configure tslib-1.0/configure
+--- tslib-1.0_orig/configure	2009-06-18 17:31:14.000000000 +0800
++++ tslib-1.0/configure	2009-06-18 17:32:39.000000000 +0800
+@@ -21115,7 +21115,7 @@ TS_CONF='${sysconfdir}/ts.conf'
+ 
+ 
+ # Library versioning
+-LT_RELEASE=0.0
++LT_RELEASE=1.0
+ LT_CURRENT=1
+ LT_REVISION=1
+ LT_AGE=1
+diff -uprN tslib-1.0_orig/configure.ac tslib-1.0/configure.ac
+--- tslib-1.0_orig/configure.ac	2009-06-18 17:31:14.000000000 +0800
++++ tslib-1.0/configure.ac	2009-06-18 17:32:56.000000000 +0800
+@@ -193,7 +193,7 @@ TS_CONF='${sysconfdir}/ts.conf'
+ AC_SUBST(TS_CONF)
+ 
+ # Library versioning
+-LT_RELEASE=0.0
++LT_RELEASE=1.0
+ LT_CURRENT=1
+ LT_REVISION=1
+ LT_AGE=1

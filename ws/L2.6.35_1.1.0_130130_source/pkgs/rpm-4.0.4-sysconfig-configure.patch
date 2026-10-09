@@ -1,0 +1,11 @@
+--- rpm-4.0.4/configure.orig	Mon Apr 25 18:03:27 2005
++++ rpm-4.0.4/configure	Mon Apr 25 18:04:07 2005
+@@ -13491,7 +13491,7 @@
+ 
+ 
+ 
+-SYSCONFIGDIR="`echo /etc/rpm`"
++SYSCONFIGDIR="`echo ${sysconfdir}/rpm`"
+ cat >> confdefs.h <<EOF
+ #define SYSCONFIGDIR "$SYSCONFIGDIR"
+ EOF

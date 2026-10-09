@@ -1,0 +1,48 @@
+March 21st 2007, Ed Swarthout  <ed.swarthout at freescale dot com>
+
+This patch adds 8548 and 8561 PCIe controllers, and fixes a double setting
+in the install path.
+
+diff --exclude CVS -uNr pciutils-2.2.4/lib/configure pciutils-2.2.4.modified/lib/configure
+--- pciutils-2.2.4/lib/configure	2006-09-09 06:06:10.000000000 -0500
++++ pciutils-2.2.4.modified/lib/configure	2007-03-20 10:52:05.320488696 -0500
+@@ -12,8 +12,10 @@
+ echo_n "Configuring libpci for your system..."
+ idsdir=${1:-/usr/share}
+ version=${2:-0.0}
+-sys=`uname -s`
++sys=${sys:`uname -s`}
+ rel=`uname -r`
++if [ -z "$cpu" ]
++then
+ if [ "$sys" = "AIX" -a -x /usr/bin/oslevel -a -x /usr/sbin/lsattr ]
+ then
+ 	rel=`/usr/bin/oslevel`
+@@ -22,6 +24,7 @@
+ else
+ 	cpu=`uname -m | sed 's/^i.86$/i386/;s/^sun4u$/sparc64/;s/^i86pc$/i386/'`
+ fi
++fi
+ if [ "$sys" = "GNU/kFreeBSD" ]
+ then
+ 	sys=freebsd
+diff --exclude CVS -uNr pciutils-2.2.4/pci.ids pciutils-2.2.4.modified/pci.ids
+--- pciutils-2.2.4/pci.ids	2006-05-05 10:20:35.000000000 -0500
++++ pciutils-2.2.4.modified/pci.ids	2007-03-20 10:54:39.069115352 -0500
+@@ -9486,6 +9486,8 @@
+ 1942  ClearSpeed Technology plc
+ 	e511  CSX600 Advance Accelerator Board
+ 1957  Freescale Semiconductor Inc
++	0012  MPC8548 [PowerQUICC III]
++	0030  MPC8544 PowerQUICC III PCIe Host Controller
+ 	0080  MPC8349E
+ 	0081  MPC8349
+ 	0082  MPC8347E TBGA
+@@ -9494,6 +9496,7 @@
+ 	0085  MPC8347 PBGA
+ 	0086  MPC8343E
+ 	0087  MPC8343
++	7011  MPC8641D PCIe Host Controller
+ 1958  Faster Technology, LLC.
+ 1966  Orad Hi-Tec Systems
+ 	1975  DVG64 family

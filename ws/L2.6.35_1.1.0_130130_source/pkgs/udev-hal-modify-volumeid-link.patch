@@ -1,0 +1,11 @@
+--- udev-117/extras/volume_id/lib/Makefile	2007-11-14 03:47:34.000000000 +0800
++++ udev-117.modified/extras/volume_id/lib/Makefile	2009-07-22 14:59:22.753859379 +0800
+@@ -108,7 +108,7 @@
+ ifeq ($(libdir),$(usrlibdir))
+ 	ln -sf $(SHLIB) $(DESTDIR)$(usrlibdir)/libvolume_id.so
+ else
+-	ln -sf $(libdir)/$(SHLIB) $(DESTDIR)$(usrlibdir)/libvolume_id.so
++	cp $(DESTDIR)$(libdir)/$(SHLIB) $(DESTDIR)$(usrlibdir)/libvolume_id.so
+ endif
+ 	$(INSTALL_DATA) -D libvolume_id.pc $(DESTDIR)$(usrlibdir)/pkgconfig/libvolume_id.pc
+ .PHONY: install

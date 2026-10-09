@@ -1,0 +1,35 @@
+From 30cb8ffafbcd65cbec6714c09d1f6cb6ae7f0420 Mon Sep 17 00:00:00 2001
+From: Dong Aisheng <b29396@freescale.com>
+Date: Fri, 4 Nov 2011 11:49:39 +0800
+Subject: [PATCH 1/1] iproute2: do not build arpd
+
+This is for fixing the building error:
+gcc -D_GNU_SOURCE -O2 -Wstrict-prototypes -Wall -I../include -DRESOLVE_HOSTNAMES -DLIBDIR=\"/usr/lib/\" -I/usr//usr/include  -o arpd arpd.c ../lib/libnetlink.a ../lib/libutil.a -ldb -lpthread
+arpd.c:19:20: error: db_185.h: No such file or directory
+arpd.c:42: error: expected '=', ',', ';', 'asm' or '__attribute__' before '*' token
+arpd.c: In function 'do_one_request':
+arpd.c:304: error: 'DBT' undeclared (first use in this function)
+
+Just remove it since it's also not used formerly.
+
+Signed-off-by: Dong Aisheng <b29396@freescale.com>
+---
+ misc/Makefile |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/misc/Makefile b/misc/Makefile
+index 8c25381..a4c9591 100644
+--- a/misc/Makefile
++++ b/misc/Makefile
+@@ -1,7 +1,7 @@
+ SSOBJ=ss.o ssfilter.o
+ LNSTATOBJ=lnstat.o lnstat_util.o
+ 
+-TARGETS=ss nstat ifstat rtacct arpd lnstat
++TARGETS=ss nstat ifstat rtacct lnstat
+ 
+ include ../Config
+ 
+-- 
+1.7.0.4
+

@@ -1,0 +1,29 @@
+20080924 Stuart Hughes <stuarth @ freescale.com>
+
+Minor fixups to make sure patch exists and also that the ] path is
+present
+
+diff --exclude CVS -uNr udev-117/etc/udev/ltib/init_script udev-117.modified/etc/udev/ltib/init_script
+--- udev-117/etc/udev/ltib/init_script	2008-09-24 14:13:29.000000000 +0100
++++ udev-117.modified/etc/udev/ltib/init_script	2008-09-24 13:43:36.000000000 +0100
+@@ -1,5 +1,10 @@
+ #!/bin/sh -e
+-PATH=/sbin:/bin
++PATH=$PATH:/sbin:/bin
++
++if [ ! -x /sbin/udevd ]
++then
++    exit 0
++fi
+ 
+ case "$1" in
+     start)
+@@ -19,7 +24,7 @@
+         udevsettle --timeout=300
+ 
+         mkdir /dev/pts
+-        mount -t devpts /dev/pts
++        mount -t devpts devpts /dev/pts
+ 
+         mkdir /dev/shm
+         ;;

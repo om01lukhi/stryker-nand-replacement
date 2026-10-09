@@ -1,0 +1,22 @@
+diff -uNr udev-117/etc/udev/ltib/10-imx.rules udev-117.bak/etc/udev/ltib/10-imx.rules
+--- udev-117/etc/udev/ltib/10-imx.rules	2011-01-20 18:40:50.714468410 +0800
++++ udev-117.bak/etc/udev/ltib/10-imx.rules	2011-01-20 18:40:16.114720948 +0800
+@@ -1,11 +1,11 @@
+ # Create symlinks for i.mx keypads and touchscreens
+-SUBSYSTEM=="input" KERNEL=="event*" SYSFS{name}=="mxckpd",     SYMLINK+="input/keyboard0"
+-SUBSYSTEM=="input" KERNEL=="event*" SYSFS{name}=="mxc_ts",     SYMLINK+="input/ts0"
+-SUBSYSTEM=="input" KERNEL=="event*" SYSFS{name}=="imx_adc_ts", SYMLINK+="input/ts0"
+-SUBSYSTEM=="input" KERNEL=="event*" SYSFS{name}=="mpr084",     SYMLINK+="input/keyboard0"
+-SUBSYSTEM=="input" KERNEL=="event*" SYSFS{name}=="tsc2007",    SYMLINK+="input/ts0"
+-SUBSYSTEM=="input" KERNEL=="event*" SYSFS{name} =="STMP3XXX touchscreen",    SYMLINK+="input/ts0"
+-SUBSYSTEM=="input" KERNEL=="event*" SYSFS{name} =="MXS touchscreen",    SYMLINK+="input/ts0"
++SUBSYSTEM=="input" KERNEL=="event*" ATTRS{name}=="mxckpd",     SYMLINK+="input/keyboard0"
++SUBSYSTEM=="input" KERNEL=="event*" ATTRS{name}=="mxc_ts",     SYMLINK+="input/ts0"
++SUBSYSTEM=="input" KERNEL=="event*" ATTRS{name}=="imx_adc_ts", SYMLINK+="input/ts0"
++SUBSYSTEM=="input" KERNEL=="event*" ATTRS{name}=="mpr084",     SYMLINK+="input/keyboard0"
++SUBSYSTEM=="input" KERNEL=="event*" ATTRS{name}=="tsc2007",    SYMLINK+="input/ts0"
++SUBSYSTEM=="input" KERNEL=="event*" ATTRS{name} =="STMP3XXX touchscreen",    SYMLINK+="input/ts0"
++SUBSYSTEM=="input" KERNEL=="event*" ATTRS{name} =="MXS touchscreen",    SYMLINK+="input/ts0"
+ 
+ # The long class name gets cut off to be mc13783_connectiv in 
+ # /sys/class/mc13783_connectivity/mc13783_connectivit

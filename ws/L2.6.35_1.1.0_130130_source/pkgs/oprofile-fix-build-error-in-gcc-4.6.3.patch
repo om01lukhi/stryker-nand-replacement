@@ -1,0 +1,12 @@
+diff -urN oprofile-0.9.6-bak2/libpp/format_output.h oprofile-0.9.6-bak/libpp/format_output.h
+--- oprofile-0.9.6-bak2/libpp/format_output.h	2012-03-16 13:17:55.000000000 +0800
++++ oprofile-0.9.6-bak/libpp/format_output.h	2012-03-16 13:31:37.000000000 +0800
+@@ -91,7 +91,7 @@
+ 		symbol_entry const & symbol;
+ 		sample_entry const & sample;
+ 		size_t pclass;
+-		mutable counts_t & counts;
++		counts_t & counts;
+ 		extra_images const & extra;
+ 		double diff;
+ 	};

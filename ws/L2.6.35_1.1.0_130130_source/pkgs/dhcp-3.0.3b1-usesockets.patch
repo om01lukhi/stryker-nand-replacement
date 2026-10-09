@@ -1,0 +1,12 @@
+diff --exclude CVS -uNr dhcp-3.0.3b1/includes/site.h dhcp-3.0.3b1.modified/includes/site.h
+--- dhcp-3.0.3b1/includes/site.h	2002-03-12 13:33:39.000000000 -0500
++++ dhcp-3.0.3b1.modified/includes/site.h	2007-10-18 11:40:22.000000000 -0400
+@@ -135,7 +135,7 @@
+    the aforementioned problems do not matter to you, or if no other
+    API is supported for your system, you may want to go with it. */
+ 
+-/* #define USE_SOCKETS */
++#define USE_SOCKETS
+ 
+ /* Define this to use the Sun Streams NIT API.
+ 

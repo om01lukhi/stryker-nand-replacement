@@ -1,0 +1,11 @@
+--- eel-2.24.0/configure	2008-09-11 03:43:08.000000000 +0800
++++ eel-2.24.0.modified/configure	2009-07-16 12:42:30.713861913 +0800
+@@ -21524,7 +21524,7 @@
+ 
+ 
+ 
+-if test "$cross_compiling" = yes; then
++if test "$cross_compiling" = no; then
+   { { echo "$as_me:$LINENO: error: cannot run test program while cross compiling
+ See \`config.log' for more details." >&5
+ echo "$as_me: error: cannot run test program while cross compiling

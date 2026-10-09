@@ -1,0 +1,33 @@
+diff --exclude CVS -uNr cantest-1.0/can.h cantest-1.0.modified/can.h
+--- cantest-1.0/can.h	2008-05-15 18:45:10.000000000 -0600
++++ cantest-1.0.modified/can.h	2008-06-05 14:31:29.000000000 -0600
+@@ -80,6 +80,7 @@
+  * @can_ifindex: CAN network interface index.
+  * @can_addr:    protocol specific address information
+  */
++#ifndef __uClinux__
+ struct sockaddr_can {
+ 	sa_family_t can_family;
+ 	int         can_ifindex;
+@@ -90,7 +91,20 @@
+ 		/* reserved for future CAN protocols address information */
+ 	} can_addr;
+ };
+-
++#else
++struct sockaddr_can {
++	sa_family_t can_family;
++	int         can_ifindex;
++        unsigned short can_protocol;
++	union {
++		struct { canid_t rx_id, tx_id; } tp16;
++		struct { canid_t rx_id, tx_id; } tp20;
++		struct { canid_t rx_id, tx_id; } mcnet;
++		struct { canid_t rx_id, tx_id; } isotp;
++		struct { int     lcu,   type;  } bap;
++	} can_addr;
++};
++#endif
+ /**
+  * struct can_filter - CAN ID based filter in can_register().
+  * @can_id:   relevant bits of CAN ID which are not masked out.

@@ -1,0 +1,11 @@
+diff --exclude CVS --exclude .git -uNr udev-117/etc/udev/ltib/10-imx.rules udev-117.modified/etc/udev/ltib/10-imx.rules
+--- udev-117/etc/udev/ltib/10-imx.rules	2009-08-19 13:46:10.000000000 +0800
++++ udev-117.modified/etc/udev/ltib/10-imx.rules	2009-08-19 13:45:44.000000000 +0800
+@@ -4,6 +4,7 @@
+ SUBSYSTEM=="input" KERNEL=="event*" SYSFS{name}=="imx_adc_ts", SYMLINK+="input/ts0"
+ SUBSYSTEM=="input" KERNEL=="event*" SYSFS{name}=="mpr084",     SYMLINK+="input/keyboard0"
+ SUBSYSTEM=="input" KERNEL=="event*" SYSFS{name}=="tsc2007",    SYMLINK+="input/ts0"
++SUBSYSTEM=="input" KERNEL=="event*" SYSFS{name} =="STMP3XXX touchscreen",    SYMLINK+="input/ts0"
+ 
+ # The long class name gets cut off to be mc13783_connectiv in 
+ # /sys/class/mc13783_connectivity/mc13783_connectivit

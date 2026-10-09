@@ -1,0 +1,14 @@
+diff --exclude CVS -uNr udev-117/etc/udev/ltib/10-imx.rules udev-117.modified/etc/udev/ltib/10-imx.rules
+--- udev-117/etc/udev/ltib/10-imx.rules	2009-04-13 13:45:42.000000000 +0800
++++ udev-117.modified/etc/udev/ltib/10-imx.rules	2009-04-13 13:44:29.000000000 +0800
+@@ -1,9 +1,9 @@
+ # Create symlinks for i.mx keypads and touchscreens
+-SUBSYSTEM=="input" SYSFS{name}=="mxckpd",     SYMLINK+="input/keyboard0"
+-SUBSYSTEM=="input" SYSFS{name}=="mxc_ts",     SYMLINK+="input/ts0"
++SUBSYSTEM=="input" KERNEL=="event*" SYSFS{name}=="mxckpd",     SYMLINK+="input/keyboard0"
++SUBSYSTEM=="input" KERNEL=="event*" SYSFS{name}=="mxc_ts",     SYMLINK+="input/ts0"
+ SUBSYSTEM=="input" KERNEL=="event*" SYSFS{name}=="imx_adc_ts", SYMLINK+="input/ts0"
+-SUBSYSTEM=="input" SYSFS{name}=="mpr084",     SYMLINK+="input/keyboard0"
+-SUBSYSTEM=="input" SYSFS{name}=="tsc2007",    SYMLINK+="input/ts0"
++SUBSYSTEM=="input" KERNEL=="event*" SYSFS{name}=="mpr084",     SYMLINK+="input/keyboard0"
++SUBSYSTEM=="input" KERNEL=="event*" SYSFS{name}=="tsc2007",    SYMLINK+="input/ts0"

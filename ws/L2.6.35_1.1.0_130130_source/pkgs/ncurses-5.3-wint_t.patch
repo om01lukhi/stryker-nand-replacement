@@ -1,0 +1,24 @@
+Steve Papacharalambous <stevep@freescale.com>  01 October 2008:
+
+Patch to remove definition of wint_t due conflicts with glibc-2.8 headers.
+ncurses should include wchar.h to get the necessary definitions.
+The definition for wint_t has been removed in later releases of ncurses.
+===============================================================================
+diff --exclude CVS -uNr ncurses-5.3/include/curses.h.in ncurses-5.3.modified/include/curses.h.in
+--- ncurses-5.3/include/curses.h.in	Sat Sep 28 16:08:06 2002
++++ ncurses-5.3.modified/include/curses.h.in	Wed Oct  1 09:01:27 2008
+@@ -294,12 +294,14 @@
+ #include <wchar.h>		/* ...to get mbstate_t, etc. */
+ #endif
+ 
++#if 0
+ #ifndef _WCHAR_T
+ typedef unsigned long wchar_t;
+ #endif /* _WCHAR_T */
+ #ifndef _WINT_T
+ typedef long int wint_t;
+ #endif /* _WINT_T */
++#endif /* if 0 */
+ 
+ #define CCHARW_MAX	5
+ typedef struct

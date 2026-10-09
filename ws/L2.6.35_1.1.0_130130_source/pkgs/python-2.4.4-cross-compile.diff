@@ -1,0 +1,237 @@
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index d125bf6..879eab9 100644
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -166,6 +166,7 @@ UNICODE_OBJS=   @UNICODE_OBJS@
+ 
+ PYTHON=		python$(EXE)
+ BUILDPYTHON=	python$(BUILDEXE)
++HOSTPYTHON=	./$(BUILDPYTHON)
+ 
+ # === Definitions added by makesetup ===
+ 
+@@ -193,6 +194,8 @@ GRAMMAR_INPUT=	$(srcdir)/Grammar/Grammar
+ # Parser
+ PGEN=		Parser/pgen$(EXE)
+ 
++HOSTPGEN=	$(PGEN)
++
+ POBJS=		\
+ 		Parser/acceler.o \
+ 		Parser/grammar1.o \
+@@ -324,8 +327,8 @@ platform: $(BUILDPYTHON)
+ # Build the shared modules
+ sharedmods: $(BUILDPYTHON)
+ 	case $$MAKEFLAGS in \
+-	*-s*) $(RUNSHARED) CC='$(CC)' LDSHARED='$(BLDSHARED)' OPT='$(OPT)' ./$(BUILDPYTHON) -E $(srcdir)/setup.py -q build;; \
+-	*) $(RUNSHARED) CC='$(CC)' LDSHARED='$(BLDSHARED)' OPT='$(OPT)' ./$(BUILDPYTHON) -E $(srcdir)/setup.py build;; \
++	*-s*) $(RUNSHARED) CC='$(CC)' LDSHARED='$(BLDSHARED)' OPT='$(OPT)' $(HOSTPYTHON) -E $(srcdir)/setup.py -q build;; \
++	*) $(RUNSHARED) CC='$(CC)' LDSHARED='$(BLDSHARED)' OPT='$(OPT)' $(HOSTPYTHON) -E $(srcdir)/setup.py build;; \
+ 	esac
+ 
+ # buildno should really depend on something like LIBRARY_SRC
+@@ -455,7 +458,7 @@ Modules/ccpython.o: $(srcdir)/Modules/ccpython.cc
+ 
+ 
+ $(GRAMMAR_H) $(GRAMMAR_C): $(PGEN) $(GRAMMAR_INPUT)
+-		-$(PGEN) $(GRAMMAR_INPUT) $(GRAMMAR_H) $(GRAMMAR_C)
++		-$(HOSTPGEN) $(GRAMMAR_INPUT) $(GRAMMAR_H) $(GRAMMAR_C)
+ 
+ $(PGEN):	$(PGENOBJS)
+ 		$(CC) $(OPT) $(LDFLAGS) $(PGENOBJS) $(LIBS) -o $(PGEN)
+@@ -748,20 +751,20 @@ libinstall:	$(BUILDPYTHON) $(srcdir)/Lib/$(PLATDIR)
+ 		done; \
+ 	done
+ 	$(INSTALL_DATA) $(srcdir)/LICENSE $(DESTDIR)$(LIBDEST)/LICENSE.txt
+-	PYTHONPATH=$(DESTDIR)$(LIBDEST)  $(RUNSHARED) \
+-		./$(BUILDPYTHON) -Wi -tt $(DESTDIR)$(LIBDEST)/compileall.py \
++	-PYTHONPATH=$(DESTDIR)$(LIBDEST)  $(RUNSHARED) \
++		$(HOSTPYTHON) -Wi -tt $(DESTDIR)$(LIBDEST)/compileall.py \
+ 		-d $(LIBDEST) -f \
+ 		-x 'badsyntax|site-packages' $(DESTDIR)$(LIBDEST)
+-	PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
+-		./$(BUILDPYTHON) -Wi -tt -O $(DESTDIR)$(LIBDEST)/compileall.py \
++	-PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
++		$(HOSTPYTHON) -Wi -tt -O $(DESTDIR)$(LIBDEST)/compileall.py \
+ 		-d $(LIBDEST) -f \
+ 		-x 'badsyntax|site-packages' $(DESTDIR)$(LIBDEST)
+ 	-PYTHONPATH=$(DESTDIR)$(LIBDEST)  $(RUNSHARED) \
+-		./$(BUILDPYTHON) -Wi -t $(DESTDIR)$(LIBDEST)/compileall.py \
++		$(HOSTPYTHON) -Wi -t $(DESTDIR)$(LIBDEST)/compileall.py \
+ 		-d $(LIBDEST)/site-packages -f \
+ 		-x badsyntax $(DESTDIR)$(LIBDEST)/site-packages
+ 	-PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
+-		./$(BUILDPYTHON) -Wi -t -O $(DESTDIR)$(LIBDEST)/compileall.py \
++		$(HOSTPYTHON) -Wi -t -O $(DESTDIR)$(LIBDEST)/compileall.py \
+ 		-d $(LIBDEST)/site-packages -f \
+ 		-x badsyntax $(DESTDIR)$(LIBDEST)/site-packages
+ 
+@@ -856,7 +859,7 @@ libainstall:	all
+ # Install the dynamically loadable modules
+ # This goes into $(exec_prefix)
+ sharedinstall:
+-	$(RUNSHARED) ./$(BUILDPYTHON) -E $(srcdir)/setup.py install \
++	$(RUNSHARED) $(HOSTPYTHON) -E $(srcdir)/setup.py install \
+ 	   	--prefix=$(prefix) \
+ 		--install-scripts=$(BINDIR) \
+ 		--install-platlib=$(DESTSHARED) \
+@@ -927,7 +930,7 @@ frameworkinstallextras:
+ # This installs a few of the useful scripts in Tools/scripts
+ scriptsinstall:
+ 	SRCDIR=$(srcdir) $(RUNSHARED) \
+-	./$(BUILDPYTHON) $(srcdir)/Tools/scripts/setup.py install \
++	$(HOSTPYTHON) $(srcdir)/Tools/scripts/setup.py install \
+ 	--prefix=$(prefix) \
+ 	--install-scripts=$(BINDIR) \
+ 	--root=/$(DESTDIR)
+diff --git a/configure b/configure
+index a6ed9f1..4096def 100755
+--- a/configure
++++ b/configure
+@@ -3861,9 +3861,6 @@ yes)
+ echo $ECHO_N "checking whether $CC accepts -fno-strict-aliasing... $ECHO_C" >&6
+      ac_save_cc="$CC"
+      CC="$CC -fno-strict-aliasing"
+-     if test "$cross_compiling" = yes; then
+-  ac_cv_no_strict_aliasing_ok=no
+-else
+   cat >conftest.$ac_ext <<_ACEOF
+ /* confdefs.h.  */
+ _ACEOF
+@@ -3879,7 +3876,11 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+-  (eval $ac_try) 2>&5
++      if test "$cross_compiling" = yes; then
++	  true
++      else
++	  (eval $ac_try) 2>&5
++      fi
+   ac_status=$?
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); }; }; then
+@@ -3893,7 +3894,7 @@ sed 's/^/| /' conftest.$ac_ext >&5
+ ac_cv_no_strict_aliasing_ok=no
+ fi
+ rm -f core *.core gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
+-fi
++
+      CC="$ac_save_cc"
+     echo "$as_me:$LINENO: result: $ac_cv_no_strict_aliasing_ok" >&5
+ echo "${ECHO_T}$ac_cv_no_strict_aliasing_ok" >&6
+diff --git a/setup.py b/setup.py
+index bb7b26e..b337440 100644
+--- a/setup.py
++++ b/setup.py
+@@ -205,26 +205,29 @@ class PyBuildExt(build_ext):
+         try:
+             imp.load_dynamic(ext.name, ext_filename)
+         except ImportError, why:
+-            self.announce('*** WARNING: renaming "%s" since importing it'
+-                          ' failed: %s' % (ext.name, why), level=3)
+-            assert not self.inplace
+-            basename, tail = os.path.splitext(ext_filename)
+-            newname = basename + "_failed" + tail
+-            if os.path.exists(newname):
+-                os.remove(newname)
+-            os.rename(ext_filename, newname)
+-
+-            # XXX -- This relies on a Vile HACK in
+-            # distutils.command.build_ext.build_extension().  The
+-            # _built_objects attribute is stored there strictly for
+-            # use here.
+-            # If there is a failure, _built_objects may not be there,
+-            # so catch the AttributeError and move on.
+-            try:
+-                for filename in self._built_objects:
+-                    os.remove(filename)
+-            except AttributeError:
+-                self.announce('unable to remove files (ignored)')
++            if os.environ.get('CROSS_COMPILE') != "yes":
++                self.announce('*** WARNING: renaming "%s" since importing it'
++                              ' failed: %s' % (ext.name, why), level=3)
++                assert not self.inplace
++                basename, tail = os.path.splitext(ext_filename)
++                newname = basename + "_failed" + tail
++                if os.path.exists(newname):
++                    os.remove(newname)
++                os.rename(ext_filename, newname)
++
++                # XXX -- This relies on a Vile HACK in
++                # distutils.command.build_ext.build_extension().  The
++                # _built_objects attribute is stored there strictly for
++                # use here.
++                # If there is a failure, _built_objects may not be there,
++                # so catch the AttributeError and move on.
++                try:
++                    for filename in self._built_objects:
++                        os.remove(filename)
++                except AttributeError:
++                    self.announce('unable to remove files (ignored)')
++            else:
++                self.announce('WARNING: "%s" failed importing, but we leave it because we are cross-compiling' % ext.name)
+         except:
+             exc_type, why, tb = sys.exc_info()
+             self.announce('*** WARNING: importing extension "%s" '
+@@ -239,9 +242,10 @@ class PyBuildExt(build_ext):
+         return sys.platform
+ 
+     def detect_modules(self):
++        # Let spoofing compiler just do the right thing
+         # Ensure that /usr/local is always used
+-        add_dir_to_list(self.compiler.library_dirs, '/usr/local/lib')
+-        add_dir_to_list(self.compiler.include_dirs, '/usr/local/include')
++        # add_dir_to_list(self.compiler.library_dirs, '/usr/local/lib')
++        # add_dir_to_list(self.compiler.include_dirs, '/usr/local/include')
+ 
+         # Add paths to popular package managers on OS X/darwin
+         if sys.platform == "darwin":
+@@ -252,25 +256,26 @@ class PyBuildExt(build_ext):
+             #add_dir_to_list(self.compiler.library_dirs, '/opt/local/lib')
+             #add_dir_to_list(self.compiler.include_dirs, '/opt/local/include')
+ 
+-        if os.path.normpath(sys.prefix) != '/usr':
+-            add_dir_to_list(self.compiler.library_dirs,
+-                            sysconfig.get_config_var("LIBDIR"))
+-            add_dir_to_list(self.compiler.include_dirs,
+-                            sysconfig.get_config_var("INCLUDEDIR"))
+-
++        # Let spoofing compiler just do the right thing
++        # if os.path.normpath(sys.prefix) != '/usr':
++        #     add_dir_to_list(self.compiler.library_dirs,
++        #                     sysconfig.get_config_var("LIBDIR"))
++        #     add_dir_to_list(self.compiler.include_dirs,
++        #                     sysconfig.get_config_var("INCLUDEDIR"))
+         try:
+             have_unicode = unicode
+         except NameError:
+             have_unicode = 0
+ 
++        # Let spoofing compiler just do the right thing
+         # lib_dirs and inc_dirs are used to search for files;
+         # if a file is found in one of those directories, it can
+         # be assumed that no additional -I,-L directives are needed.
+-        lib_dirs = self.compiler.library_dirs + [
+-            '/lib64', '/usr/lib64',
+-            '/lib', '/usr/lib',
+-            ]
+-        inc_dirs = self.compiler.include_dirs + ['/usr/include']
++        #  lib_dirs = self.compiler.library_dirs + [
++        #      '/lib64', '/usr/lib64',
++        #      '/lib', '/usr/lib',
++        #      ]
++        #  inc_dirs = self.compiler.include_dirs + ['/usr/include']
+         exts = []
+ 
+         platform = self.get_platform()
+@@ -311,6 +316,9 @@ class PyBuildExt(build_ext):
+ 
+         # XXX Omitted modules: gl, pure, dl, SGI-specific modules
+ 
++        lib_dirs = []
++        inc_dirs = []
++
+         #
+         # The following modules are all pretty straightforward, and compile
+         # on pretty much any POSIXish platform.

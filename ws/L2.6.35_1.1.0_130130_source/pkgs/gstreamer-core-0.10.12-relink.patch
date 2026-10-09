@@ -1,0 +1,71 @@
+Steve Papacharalambous <stevep@freescale.com> 14jun07:
+
+This patch fixes relink problems by removing "-L /usr/lib" (libdir):
+
+[snip]
+ /bin/sh ../../../libtool --mode=install /usr/bin/install -c
+'libgstbase-0.10.la'
+'/home/stevep/work/ltib/tmp/gstreamer-core//opt/freescale/rootfs/ppc/usr/lib/libgstbase-0.10.la'
+libtool: install: warning: relinking `libgstbase-0.10.la'
+(cd /home/stevep/work/ltib/rpm/BUILD/gstreamer-0.10.12/libs/gst/base; /bin/sh
+../../../libtool  --tag=CC --mode=relink gcc -g -O2 -o libgstbase-0.10.la -rpath /usr/lib -export-symbols-regex "^_*(gst_|Gst|GST_).*" -no-undefined -version-info 11:0:11 libgstbase_0.10_la-gstadapter.lo
+libgstbase_0.10_la-gstbasesink.lo libgstbase_0.10_la-gstbasesrc.lo
+libgstbase_0.10_la-gstbasetransform.lo libgstbase_0.10_la-gstcollectpads.lo
+libgstbase_0.10_la-gstpushsrc.lo libgstbase_0.10_la-gsttypefindhelper.lo
+libgstbase_0.10_la-gstdataqueue.lo ../../../gst/libgstreamer-0.10.la -pthread -L/home/stevep/work/ltib/rootfs/usr/lib -lgobject-2.0 -lgthread-2.0 -lrt -lgmodule-2.0 -ldl -lglib-2.0 -inst-prefix-dir
+/home/stevep/work/ltib/tmp/gstreamer-core//opt/freescale/rootfs/ppc)
+generating symbol list for `libgstbase-0.10.la'
+nm  .libs/libgstbase_0.10_la-gstadapter.o
+.libs/libgstbase_0.10_la-gstbasesink.o .libs/libgstbase_0.10_la-gstbasesrc.o
+.libs/libgstbase_0.10_la-gstbasetransform.o
+.libs/libgstbase_0.10_la-gstcollectpads.o
+.libs/libgstbase_0.10_la-gstpushsrc.o
+.libs/libgstbase_0.10_la-gsttypefindhelper.o
+.libs/libgstbase_0.10_la-gstdataqueue.o  | sed -n -e 's/^.*[
+]\([ABCDGIRSTW][ABCDGIRSTW]*\)[         ][
+]*\([_A-Za-z][_A-Za-z0-9]*\)$/\1 \2 \2/p' | /usr/local/bin/sed 's/.* //' |
+sort | uniq > .libs/libgstbase-0.10.exp
+grep -E -e "^_*(gst_|Gst|GST_).*" ".libs/libgstbase-0.10.exp" >
+".libs/libgstbase-0.10.expT"
+mv -f ".libs/libgstbase-0.10.expT" ".libs/libgstbase-0.10.exp"
+echo "{ global:" > .libs/libgstbase-0.10.ver
+ cat .libs/libgstbase-0.10.exp | sed -e "s/\(.*\)/\1;/" >>
+.libs/libgstbase-0.10.ver
+echo "local: *; };" >> .libs/libgstbase-0.10.ver
+ gcc -shared  .libs/libgstbase_0.10_la-gstadapter.o
+.libs/libgstbase_0.10_la-gstbasesink.o .libs/libgstbase_0.10_la-gstbasesrc.o
+.libs/libgstbase_0.10_la-gstbasetransform.o
+.libs/libgstbase_0.10_la-gstcollectpads.o
+.libs/libgstbase_0.10_la-gstpushsrc.o
+.libs/libgstbase_0.10_la-gsttypefindhelper.o
+.libs/libgstbase_0.10_la-gstdataqueue.o -L/home/stevep/work/ltib/tmp/gstreamer-core//opt/freescale/rootfs/ppc/usr/lib -L/usr/lib -lgstreamer-0.10 -L/home/stevep/work/ltib/rootfs/usr/lib -lgobject-2.0 -lgthread-2.0 -lrt -lgmodule-2.0 -ldl -lglib-2.0  -pthread -Wl,-soname -Wl,libgstbase-0.10.so.0 -Wl,-version-script -Wl,.libs/libgstbase-0.10.ver -o .libs/libgstbase-0.10.so.0.11.0
+/opt/freescale/usr/local/gcc-4.1.59-eglibc-2.5.59/powerpc-linux-gnu/lib/gcc/powerpc-linux-gnu/4.1.2/../../../../powerpc-linux-gnu/bin/ld:
+warning: library search path "/usr/lib" is unsafe for cross-compilation
+/opt/freescale/usr/local/gcc-4.1.59-eglibc-2.5.59/powerpc-linux-gnu/lib/gcc/powerpc-linux-gnu/4.1.2/../../../../powerpc-linux-gnu/bin/ld:
+skipping incompatible /usr/lib/libgobject-2.0.so when searching for -lgobject-2.0
+/opt/freescale/usr/local/gcc-4.1.59-eglibc-2.5.59/powerpc-linux-gnu/lib/gcc/powerpc-linux-gnu/4.1.2/../../../../powerpc-linux-gnu/bin/ld:
+skipping incompatible /usr/lib/libgthread-2.0.so when searching for -lgthread-2.0
+/opt/freescale/usr/local/gcc-4.1.59-eglibc-2.5.59/powerpc-linux-gnu/lib/gcc/powerpc-linux-gnu/4.1.2/../../../../powerpc-linux-gnu/bin/ld:
+skipping incompatible /lib/libpthread.so.0 when searching for
+/lib/libpthread.so.0
+/opt/freescale/usr/local/gcc-4.1.59-eglibc-2.5.59/powerpc-linux-gnu/lib/gcc/powerpc-linux-gnu/4.1.2/../../../../powerpc-linux-gnu/bin/ld:
+cannot find /lib/libpthread.so.0
+collect2: ld returned 1 exit status
+libtool: install: error: relink `libgstbase-0.10.la' with the above command
+before installing it
+[/snip]
+
+
+diff --exclude CVS -uNr gstreamer-0.10.12/ltmain.sh gstreamer-0.10.12.modified/ltmain.sh
+--- gstreamer-0.10.12/ltmain.sh	Tue Jan 10 15:23:50 2006
++++ gstreamer-0.10.12.modified/ltmain.sh	Thu Jun 14 13:13:38 2007
+@@ -2764,7 +2764,8 @@
+ 	      fi
+ 	    else
+ 	      # We cannot seem to hardcode it, guess we'll fake it.
+-	      add_dir="-L$libdir"
++              # stevep: 14jun07: comment this out as it breaks cross compiling.
++	      # add_dir="-L$libdir"
+ 	      # Try looking first in the location we're being installed to.
+ 	      if test -n "$inst_prefix_dir"; then
+ 		case $libdir in

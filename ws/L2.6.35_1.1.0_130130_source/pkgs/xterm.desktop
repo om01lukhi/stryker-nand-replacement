@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=xterm Terminal
+GenericName=Terminal
+Comment=Terminal emulator for the X Window System
+Exec=xterm
+Icon=gnome-xterm.png
+Type=Application
+Categories=System;TerminalEmulator;
+NoDisplay=true

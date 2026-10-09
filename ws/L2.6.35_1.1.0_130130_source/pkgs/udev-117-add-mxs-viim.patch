@@ -1,0 +1,7 @@
+--- udev-117/etc/udev/ltib/10-imx.rules	2009-07-27 20:14:10.000000000 +0800
++++ udev-117.modified//etc/udev/ltib/10-imx.rules	2009-07-27 20:16:58.000000000 +0800
+@@ -10,3 +10,4 @@
+ KERNEL=="mc13783_connectiv*",  NAME="mc13783_connectivity"
+ # Anyone has readonly permission to IIM device file
+ KERNEL=="mxc_iim", NAME="%k", MODE="0444", SYMLINK+="mxc_mem"
++KERNEL=="mxs_viim", NAME="%k", MODE="0444", SYMLINK+="mxc_mem"

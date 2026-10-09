@@ -1,0 +1,20 @@
+--- libxml2-2.6.28/nanohttp.c	2007-04-17 20:43:53.000000000 +0800
++++ libxml2-2.6.28.new/nanohttp.c	2010-08-31 19:23:23.000000000 +0800
+@@ -1571,6 +1571,8 @@
+  *
+  * Returns -1 in case of failure, 0 incase of success.
+  */
++#include <sys/types.h>
++#include <sys/stat.h>
+ int
+ xmlNanoHTTPSave(void *ctxt, const char *filename) {
+     char *buf = NULL;
+@@ -1582,7 +1584,7 @@
+     if (!strcmp(filename, "-")) 
+         fd = 0;
+     else {
+-        fd = open(filename, O_CREAT | O_WRONLY);
++        fd = open(filename, O_CREAT | O_WRONLY, S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH);
+ 	if (fd < 0) {
+ 	    xmlNanoHTTPClose(ctxt);
+ 	    return(-1);

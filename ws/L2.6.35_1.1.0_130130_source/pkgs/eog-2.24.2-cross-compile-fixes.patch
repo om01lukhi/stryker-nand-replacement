@@ -1,0 +1,39 @@
+diff -ruN eog-2.24.2/configure eog-2.24.2.modified/configure
+--- eog-2.24.2/configure	2008-11-25 06:05:26.000000000 +0800
++++ eog-2.24.2.modified/configure	2009-07-08 12:10:37.035112736 +0800
+@@ -25006,13 +25006,6 @@
+   gdu_cv_have_gdu=no
+ fi
+ 
+-if test "$gdu_cv_have_gdu" = "yes"; then
+-	:
+-else
+-	{ { $as_echo "$as_me:$LINENO: error: gnome-doc-utils >= $gdu_cv_version_required not found" >&5
+-$as_echo "$as_me: error: gnome-doc-utils >= $gdu_cv_version_required not found" >&2;}
+-   { (exit 1); exit 1; }; }
+-fi
+ 
+ 
+ 
+@@ -25106,8 +25099,7 @@
+              libart-2.0 >= $LIBART_REQUIRED \
+              gnome-desktop-2.0 >= $GNOME_DESKTOP_REQUIRED \
+              gtk+-unix-print-2.0 >= $GTK_PRINT_REQUIRED \
+-	     gnome-icon-theme >= $GNOME_ICON_THEME_REQUIRED \
+-	     shared-mime-info >= $SHARED_MIME_INFO_REQUIRED"
++	     gnome-icon-theme >= $GNOME_ICON_THEME_REQUIRED "
+ 
+ # ***************
+ # EXIF (optional)
+diff -ruN eog-2.24.2/Makefile.in eog-2.24.2.modified/Makefile.in
+--- eog-2.24.2/Makefile.in	2008-11-25 06:05:32.000000000 +0800
++++ eog-2.24.2.modified/Makefile.in	2009-07-08 12:09:57.083864766 +0800
+@@ -274,7 +274,7 @@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+ @ENABLE_JPEG_TRUE@jpeg_DIRS = jpegutils
+-SUBDIRS = $(jpeg_DIRS) cut-n-paste bindings src plugins po help data doc
++SUBDIRS = $(jpeg_DIRS) cut-n-paste bindings src plugins po data doc
+ EXTRA_DIST = \
+ 	HACKING			\
+ 	MAINTAINERS		\

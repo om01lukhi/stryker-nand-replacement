@@ -1,0 +1,19 @@
+Steve Papacharalambous <stevep@freescale.com> 16 September 2008:
+
+This patch changes -iwithprefix to -iwithprefixbefore to fix c++ header errors
+encountered with 4.3.x toolchains.  There has always been a problem associated
+with -iwithprefix, but until now this has been masked.  The new c++ headers
+use #include_next manifests the problem with -iwithprefix.
+===============================================================================
+diff --exclude CVS -uNr mkspooflinks-3.4/spoof_wrapper mkspooflinks-3.4.modified/spoof_wrapper
+--- mkspooflinks-3.4/spoof_wrapper	Tue Sep 16 09:54:02 2008
++++ mkspooflinks-3.4.modified/spoof_wrapper	Tue Sep 16 09:53:50 2008
+@@ -45,7 +45,7 @@
+ if($fname eq 'gcc' || $fname eq 'g++') {
+     @srch  = ('-B', "$ENV{DEV_IMAGE}/usr/lib//",
+                '-idirafter', "$ENV{DEV_IMAGE}/usr/include",
+-               '-iwithprefix', 'include',
++               '-iwithprefixbefore', 'include',
+              );
+     $link = 1;
+     foreach $opt (@ARGV) {

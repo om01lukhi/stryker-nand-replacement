@@ -1,0 +1,119 @@
+20080609, Stuart Hughes <stuarth at freescale dot com>
+
+This patch allows you to pass an optional argument (last) which is the name of
+the file to use instead of defconfig/.config.  If the name is given lkc will
+read from that file (if it exists) and use those configuration points.  It will
+write it's output to the named configuration file (overwriting it if it
+exists).  Think of this as providing a way of using something else other than
+.config to iterate the configuration over.  The previous config is saved to
+name.old (as normal)
+
+20081010, Stuart Hughes <stuarth at freescale dot com>
+
+Updated to allow longer path names for config file and a buffer
+overflow check.
+
+diff --exclude CVS -uNr lkc-1.4/conf.c lkc-1.4.modified/conf.c
+--- lkc-1.4/conf.c	2008-10-10 15:31:36.000000000 +0100
++++ lkc-1.4.modified/conf.c	2008-10-10 15:29:13.000000000 +0100
+@@ -485,6 +485,8 @@
+ {
+ 	const char *name;
+ 	struct stat tmpstat;
++	char *cf = NULL;
++	int ni = 1;
+ 
+ 	if (ac > 1 && av[1][0] == '-') {
+ 		switch (av[1][1]) {
+@@ -516,9 +518,16 @@
+ 			printf("%s [-o|-s] config\n", av[0]);
+ 			exit(0);
+ 		}
+-		name = av[2];
++		ni = 2;
++		name = av[ni];
+ 	} else
+-		name = av[1];
++		name = av[ni];
++
++	if(av[ni+1]) {
++		cf = av[ni+1];
++		conf_def_filename = cf;
++	}
++
+ 	conf_parse(name);
+ 	//zconfdump(stdout);
+ 	switch (input_mode) {
+@@ -543,7 +552,7 @@
+ 		}
+ 	case ask_all:
+ 	case ask_new:
+-		conf_read(NULL);
++		conf_read(cf);
+ 		break;
+ 	default:
+ 		break;
+diff --exclude CVS -uNr lkc-1.4/confdata.c lkc-1.4.modified/confdata.c
+--- lkc-1.4/confdata.c	2008-10-10 15:31:36.000000000 +0100
++++ lkc-1.4.modified/confdata.c	2008-10-10 15:31:27.000000000 +0100
+@@ -14,7 +14,7 @@
+ #define LKC_DIRECT_LINK
+ #include "lkc.h"
+ 
+-const char conf_def_filename[] = ".config";
++char *conf_def_filename = ".config";
+ 
+ /* this is the config settings file that the config system will try to read if
+  * non is specified on the command line.  For now, let's not have it try any */
+@@ -294,7 +294,7 @@
+ 	struct symbol *sym;
+ 	struct menu *menu;
+ 	const char *basename;
+-	char dirname[128], tmpname[128], newname[128];
++	char dirname[128], tmpname[512], newname[512];
+ 	int type, l;
+ 	const char *str;
+ 	time_t now;
+@@ -323,6 +323,10 @@
+ 	} else
+ 		basename = conf_def_filename;
+ 
++    if(strlen(basename) > 500) {
++        fprintf(stderr, "%s is too long, possible buffer overflow\n", basename);
++        exit(1);
++    }
+ 	sprintf(newname, "%s.tmpconfig.%d", dirname, (int)getpid());
+ 	out = fopen(newname, "w");
+ 	if (!out)
+diff --exclude CVS -uNr lkc-1.4/lkc.h lkc-1.4.modified/lkc.h
+--- lkc-1.4/lkc.h	2008-10-10 15:31:36.000000000 +0100
++++ lkc-1.4.modified/lkc.h	2008-10-10 15:29:13.000000000 +0100
+@@ -38,7 +38,7 @@
+ char *zconf_curname(void);
+ 
+ /* confdata.c */
+-extern const char conf_def_filename[];
++char *conf_def_filename;
+ extern char conf_filename[];
+ 
+ char *conf_get_default_confname(void);
+diff --exclude CVS -uNr lkc-1.4/mconf.c lkc-1.4.modified/mconf.c
+--- lkc-1.4/mconf.c	2008-10-10 15:31:36.000000000 +0100
++++ lkc-1.4.modified/mconf.c	2008-10-10 15:29:13.000000000 +0100
+@@ -1024,9 +1024,15 @@
+ 	int stat;
+ 	char *mode;
+ 	struct symbol *sym;
++	char *cf = NULL;
++
++	if(av[2]) {
++		cf = av[2];
++		conf_def_filename = cf;
++	}
+ 
+ 	conf_parse(av[1]);
+-	conf_read(NULL);
++	conf_read(cf);
+ 	menu_assign_ids();
+ 
+     sym = sym_lookup("CONFIG_TITLE", 0);

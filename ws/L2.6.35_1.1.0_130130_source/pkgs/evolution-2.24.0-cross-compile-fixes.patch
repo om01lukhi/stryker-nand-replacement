@@ -1,0 +1,154 @@
+diff -ruN evolution-2.24.0/configure evolution-2.24.0.modified/configure
+--- evolution-2.24.0/configure	2008-09-22 12:56:20.000000000 +0800
++++ evolution-2.24.0.modified/configure	2009-07-17 15:09:50.323861508 +0800
+@@ -2625,13 +2625,6 @@
+   gdu_cv_have_gdu=no
+ fi
+ 
+-if test "$gdu_cv_have_gdu" = "yes"; then
+-	:
+-else
+-	{ { echo "$as_me:$LINENO: error: gnome-doc-utils >= $gdu_cv_version_required not found" >&5
+-echo "$as_me: error: gnome-doc-utils >= $gdu_cv_version_required not found" >&2;}
+-   { (exit 1); exit 1; }; }
+-fi
+ 
+ 
+ 
+@@ -24393,8 +24386,7 @@
+          libglade-2.0 >= 2.0.0
+          libgnomecanvas-2.0 >= 2.0.0
+          libgnomeui-2.0 >= 2.0.0
+-         libxml-2.0 >= 2.0.0
+-	 shared-mime-info >= 0.22\"") >&5
++         libxml-2.0 >= 2.0.0\"") >&5
+   ($PKG_CONFIG --exists --print-errors "glib-2.0 >= 2.16.0
+          gtk+-2.0 >= 2.12.0
+          gconf-2.0 >= 2.0.0
+@@ -24403,8 +24395,7 @@
+          libglade-2.0 >= 2.0.0
+          libgnomecanvas-2.0 >= 2.0.0
+          libgnomeui-2.0 >= 2.0.0
+-         libxml-2.0 >= 2.0.0
+-	 shared-mime-info >= 0.22") 2>&5
++         libxml-2.0 >= 2.0.0") 2>&5
+   ac_status=$?
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); }; then
+@@ -24416,8 +24407,7 @@
+          libglade-2.0 >= 2.0.0
+          libgnomecanvas-2.0 >= 2.0.0
+          libgnomeui-2.0 >= 2.0.0
+-         libxml-2.0 >= 2.0.0
+-	 shared-mime-info >= 0.22" 2>/dev/null`
++         libxml-2.0 >= 2.0.0" 2>/dev/null`
+ else
+   pkg_failed=yes
+ fi
+@@ -24436,8 +24426,7 @@
+          libglade-2.0 >= 2.0.0
+          libgnomecanvas-2.0 >= 2.0.0
+          libgnomeui-2.0 >= 2.0.0
+-         libxml-2.0 >= 2.0.0
+-	 shared-mime-info >= 0.22\"") >&5
++         libxml-2.0 >= 2.0.0\"") >&5
+   ($PKG_CONFIG --exists --print-errors "glib-2.0 >= 2.16.0
+          gtk+-2.0 >= 2.12.0
+          gconf-2.0 >= 2.0.0
+@@ -24446,8 +24435,7 @@
+          libglade-2.0 >= 2.0.0
+          libgnomecanvas-2.0 >= 2.0.0
+          libgnomeui-2.0 >= 2.0.0
+-         libxml-2.0 >= 2.0.0
+-	 shared-mime-info >= 0.22") 2>&5
++         libxml-2.0 >= 2.0.0") 2>&5
+   ac_status=$?
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); }; then
+@@ -24459,8 +24447,7 @@
+          libglade-2.0 >= 2.0.0
+          libgnomecanvas-2.0 >= 2.0.0
+          libgnomeui-2.0 >= 2.0.0
+-         libxml-2.0 >= 2.0.0
+-	 shared-mime-info >= 0.22" 2>/dev/null`
++         libxml-2.0 >= 2.0.0" 2>/dev/null`
+ else
+   pkg_failed=yes
+ fi
+@@ -24486,8 +24473,7 @@
+          libglade-2.0 >= 2.0.0
+          libgnomecanvas-2.0 >= 2.0.0
+          libgnomeui-2.0 >= 2.0.0
+-         libxml-2.0 >= 2.0.0
+-	 shared-mime-info >= 0.22" 2>&1`
++         libxml-2.0 >= 2.0.0" 2>&1`
+         else
+ 	        GNOME_PLATFORM_PKG_ERRORS=`$PKG_CONFIG --print-errors "glib-2.0 >= 2.16.0
+          gtk+-2.0 >= 2.12.0
+@@ -24497,8 +24483,7 @@
+          libglade-2.0 >= 2.0.0
+          libgnomecanvas-2.0 >= 2.0.0
+          libgnomeui-2.0 >= 2.0.0
+-         libxml-2.0 >= 2.0.0
+-	 shared-mime-info >= 0.22" 2>&1`
++         libxml-2.0 >= 2.0.0" 2>&1`
+         fi
+ 	# Put the nasty error message in config.log where it belongs
+ 	echo "$GNOME_PLATFORM_PKG_ERRORS" >&5
+@@ -24511,8 +24496,7 @@
+          libglade-2.0 >= 2.0.0
+          libgnomecanvas-2.0 >= 2.0.0
+          libgnomeui-2.0 >= 2.0.0
+-         libxml-2.0 >= 2.0.0
+-	 shared-mime-info >= 0.22) were not met:
++         libxml-2.0 >= 2.0.0 ) were not met:
+ 
+ $GNOME_PLATFORM_PKG_ERRORS
+ 
+@@ -24531,8 +24515,7 @@
+          libglade-2.0 >= 2.0.0
+          libgnomecanvas-2.0 >= 2.0.0
+          libgnomeui-2.0 >= 2.0.0
+-         libxml-2.0 >= 2.0.0
+-	 shared-mime-info >= 0.22) were not met:
++         libxml-2.0 >= 2.0.0) were not met:
+ 
+ $GNOME_PLATFORM_PKG_ERRORS
+ 
+@@ -25156,7 +25139,7 @@
+ 
+ { echo "$as_me:$LINENO: checking preferred charset formats for system iconv" >&5
+ echo $ECHO_N "checking preferred charset formats for system iconv... $ECHO_C" >&6; }
+-if test "$cross_compiling" = yes; then
++if test "$cross_compiling" = no; then
+   { { echo "$as_me:$LINENO: error: cannot run test program while cross compiling
+ See \`config.log' for more details." >&5
+ echo "$as_me: error: cannot run test program while cross compiling
+diff -ruN evolution-2.24.0/Makefile.in evolution-2.24.0.modified/Makefile.in
+--- evolution-2.24.0/Makefile.in	2008-09-22 17:46:38.000000000 +0800
++++ evolution-2.24.0.modified/Makefile.in	2009-07-17 15:10:49.565108758 +0800
+@@ -32,7 +32,6 @@
+ POST_UNINSTALL = :
+ build_triplet = @build@
+ host_triplet = @host@
+-@WITH_HELP_TRUE@am__append_1 = help
+ subdir = .
+ DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
+ 	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
+@@ -76,7 +75,7 @@
+ CTAGS = ctags
+ DIST_SUBDIRS = win32 data e-util a11y widgets shell filter smime \
+ 	addressbook calendar art composer mail plugins ui views tools \
+-	po sounds help
++	po sounds
+ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
+ distdir = $(PACKAGE)-$(VERSION)
+ top_distdir = $(distdir)
+@@ -364,7 +363,6 @@
+ docdir = @docdir@
+ dvidir = @dvidir@
+ etspecdir = @etspecdir@
+-evolutionhelpdir = @evolutionhelpdir@
+ evolutionuidir = @evolutionuidir@
+ exec_prefix = @exec_prefix@
+ gladedir = @gladedir@

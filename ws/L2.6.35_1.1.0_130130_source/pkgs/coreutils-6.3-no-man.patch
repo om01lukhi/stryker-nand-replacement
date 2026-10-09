@@ -1,0 +1,28 @@
+Steve Papacharalambous <stevep@freescale.com> 17 September 2008:
+Patch to fix following error:
+
+[snip]
+Making all in man
+make[1]: Entering directory `/home/stevep/work/8548/ltib/rpm/BUILD/coreutils-6.3/man'
+Updating man page touch.1
+help2man: can't get `--help' info from touch.td/touch
+make[1]: *** [touch.1] Error 126
+make[1]: Leaving directory `/home/stevep/work/8548/ltib/rpm/BUILD/coreutils-6.3/man'
+make: *** [all-recursive] Error 1
+[/snip]
+
+Patch downloaded from:
+http://svn.exactcode.de/t2/trunk/package/base/coreutils/no-man.patch.cross
+===============================================================================
+diff --exclude CVS -uNr coreutils-6.3/Makefile.in coreutils-6.3.modified/Makefile.in
+--- coreutils-6.3/Makefile.in	Sat Sep 30 10:09:28 2006
++++ coreutils-6.3.modified/Makefile.in	Wed Sep 17 17:26:51 2008
+@@ -395,7 +395,7 @@
+ sharedstatedir = @sharedstatedir@
+ sysconfdir = @sysconfdir@
+ target_alias = @target_alias@
+-SUBDIRS = lib src doc man po tests
++SUBDIRS = lib src doc po tests
+ EXTRA_DIST = Makefile.cfg Makefile.maint GNUmakefile \
+   .gitignore \
+   .hgignore \

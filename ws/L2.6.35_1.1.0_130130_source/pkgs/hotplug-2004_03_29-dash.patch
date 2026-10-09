@@ -1,0 +1,26 @@
+Stuart Hughes <stuarth at freescale dot com>
+
+This patch is needed when running on Ubuntu, which by default uses
+the dash shell, which cannot cope with a/{b,c} shell expansions.
+
+diff --exclude CVS -uNr hotplug-2004_03_29/Makefile hotplug-2004_03_29.modified/Makefile
+--- hotplug-2004_03_29/Makefile	2008-11-21 10:30:42.000000000 +0000
++++ hotplug-2004_03_29.modified/Makefile	2008-11-21 10:28:58.000000000 +0000
+@@ -83,12 +83,13 @@
+ 
+ install:
+ 	${INSTALL_SCRIPT} -D sbin/hotplug $(sbindir)/hotplug
+-	$(INSTALL) -d $(etcdir)/hotplug/{usb,pci}
++	$(INSTALL) -d $(etcdir)/hotplug/usb
++	$(INSTALL) -d $(etcdir)/hotplug/pci
+ 	$(INSTALL) -D etc/hotplug.d/default/default.hotplug $(etcdir)/hotplug.d/default/default.hotplug
+-	for F in etc/hotplug/{*.{agent,rc},hotplug.functions} ; do \
++	for F in etc/hotplug/*agent etc/hotplug/*rc etc/hotplug/hotplug.functions; do \
+ 	    ${INSTALL_SCRIPT} $$F $(etcdir)/hotplug ; \
+ 	    done
+-	for F in etc/hotplug/{blacklist,usb.{user,hand,dist}map} ; do \
++	for F in etc/hotplug/blacklist etc/hotplug/usb.usermap etc/hotplug/usb.handmap etc/hotplug/usb.distmap; do \
+ 	    ${INSTALL_DATA} $$F $(etcdir)/hotplug ; \
+ 	    done
+ 	${INSTALL_SCRIPT} -D etc/rc.d/init.d/hotplug $(etcdir)/rc.d/init.d/hotplug
+Binary files hotplug-2004_03_29/hotplug-2008_11_21.tar.gz and hotplug-2004_03_29.modified/hotplug-2008_11_21.tar.gz differ

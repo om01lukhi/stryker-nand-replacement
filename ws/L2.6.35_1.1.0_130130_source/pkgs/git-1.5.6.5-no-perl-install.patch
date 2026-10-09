@@ -1,0 +1,31 @@
+Steve Papacharalambous <stevep@freescale.com> 19 August 2008:
+Installing git-1.5.6.5 on RedHat 7.3 host machine with perl revision: v5.6.1
+fails with the following error:
+
+[snip]
+...
+...
+make -C perl prefix='/opt/freescale/ltib/usr' DESTDIR='/home/stevep/work/875/ltib/tmp/git//opt/freescale/rootfs/i686' install
+make[1]: Entering directory `/opt/freescale/ltib/usr/src/rpm/BUILD/git-1.5.6.5/perl'
+make[2]: Entering directory `/opt/freescale/ltib/usr/src/rpm/BUILD/git-1.5.6.5/perl'
+mkdir /opt/freescale/ltib/usr/lib/perl5: Permission denied at /usr/lib/perl5/5.6.1/ExtUtils/Install.pm line 81
+make[2]: *** [pure_site_install] Error 255
+[/snip]
+
+Looks like a bug in the host version of perl trying to install in "prefix" and
+not DESTDIR.
+
+This patch prevents the "make install"  for perl in the git Makefile. 
+===============================================================================
+diff -uNr git-1.5.6.5.orig/Makefile git-1.5.6.5/Makefile
+--- git-1.5.6.5.orig/Makefile	Thu Aug  7 00:38:47 2008
++++ git-1.5.6.5/Makefile	Tue Aug 19 13:35:27 2008
+@@ -1274,7 +1274,7 @@
+ 	$(INSTALL) $(ALL_PROGRAMS) '$(DESTDIR_SQ)$(gitexecdir_SQ)'
+ 	$(INSTALL) git$X '$(DESTDIR_SQ)$(bindir_SQ)'
+ 	$(MAKE) -C templates DESTDIR='$(DESTDIR_SQ)' install
+-	$(MAKE) -C perl prefix='$(prefix_SQ)' DESTDIR='$(DESTDIR_SQ)' install
++#	$(MAKE) -C perl prefix='$(prefix_SQ)' DESTDIR='$(DESTDIR_SQ)' install
+ ifndef NO_TCLTK
+ 	$(MAKE) -C gitk-git install
+ 	$(MAKE) -C git-gui install

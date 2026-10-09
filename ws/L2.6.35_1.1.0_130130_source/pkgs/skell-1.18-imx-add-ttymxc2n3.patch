@@ -1,0 +1,16 @@
+diff -ruN skell-1.18/etc/securetty skell-1.18-bak/etc/securetty
+--- skell-1.18/etc/securetty	2012-02-03 10:10:34.000000000 +0800
++++ skell-1.18-bak/etc/securetty	2012-02-03 10:12:03.000000000 +0800
+@@ -1,8 +1,12 @@
+ console
+ ttymxc0
+ ttymxc1
++ttymxc2
++ttymxc3
+ ttymxc/0
+ ttymxc/1
++ttymxc/2
++ttymxc/3
+ tty1
+ tty2
+ tty3

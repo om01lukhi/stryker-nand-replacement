@@ -1,0 +1,12 @@
+diff --exclude CVS --exclude .git -uNr e2fsprogs-1.41.4/lib/Makefile.elf-lib e2fsprogs-1.41.4.modified/lib/Makefile.elf-lib
+--- e2fsprogs-1.41.4/lib/Makefile.elf-lib	2008-10-07 09:22:39.000000000 -0500
++++ e2fsprogs-1.41.4.modified/lib/Makefile.elf-lib	2010-06-15 14:39:00.000000000 -0500
+@@ -48,7 +48,7 @@
+ 	@if test "$(ELF_INSTALL_DIR)" = "$(libdir)"; then \
+ 		$(LN_S) -f $(ELF_SONAME) $(DESTDIR)$(libdir)/$(ELF_IMAGE).so ; \
+ 	else \
+-		$(LN_S) -f $(ELF_INSTALL_DIR)/$(ELF_SONAME) \
++		$(LN_S) -f ../..$(ELF_INSTALL_DIR)/$(ELF_SONAME) \
+ 			$(DESTDIR)$(libdir)/$(ELF_IMAGE).so; \
+ 	fi			
+ 	@echo "	LDCONFIG"

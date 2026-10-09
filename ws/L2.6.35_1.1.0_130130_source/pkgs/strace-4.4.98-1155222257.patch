@@ -1,0 +1,33 @@
+Thu 10 Aug 2006 Stuart Hughes <stuarth@freescale.com>
+
+This is a tentative patch to fix:
+if gcc -DHAVE_CONFIG_H -I. -I. -I. -Ilinux/m68k -I./linux/m68k -Ilinux -I./linux   -Wall -D_GNU_SOURCE -g -O2 -MT signal.o -MD -MP -MF ".deps/signal.Tpo" \
+  -c -o signal.o `test -f 'signal.c' || echo './'`signal.c; \
+then mv ".deps/signal.Tpo" ".deps/signal.Po"; \
+else rm -f ".deps/signal.Tpo"; exit 1; \
+fi
+signal.c:118: error: redefinition of 'struct sigcontext'
+
+It also requires ac_cv_header_asm_sigcontext_h=yes on the configure 
+command line.
+
+The reason it's tentative is that the ac_cv_header_asm_sigcontext_h
+has always failed in the past (incorrectly) do to the same redefinition
+problem.  I believe 'yes' is the right response for this test.  So
+I've added this exception clause to M68K for the 'yes' response.
+My only worry is what effect changes the result of ac_cv_header_asm_sigcontext_h
+will be on other platforms.
+
+
+diff --exclude CVS -uNr strace-4.4.98/signal.c strace-4.4.98.modified/signal.c
+--- strace-4.4.98/signal.c	2003-06-03 18:29:05.000000000 -0500
++++ strace-4.4.98.modified/signal.c	2006-08-10 10:03:58.000000000 -0500
+@@ -83,7 +83,7 @@
+ 	int			si_mask;
+ } m_siginfo_t;
+ #elif defined HAVE_ASM_SIGCONTEXT_H
+-#if !defined(IA64) && !defined(X86_64)
++#if !defined(IA64) && !defined(X86_64) && !defined(M68K)
+ #include <asm/sigcontext.h>
+ #endif /* !IA64 && !X86_64 */
+ #else /* !HAVE_ASM_SIGCONTEXT_H */

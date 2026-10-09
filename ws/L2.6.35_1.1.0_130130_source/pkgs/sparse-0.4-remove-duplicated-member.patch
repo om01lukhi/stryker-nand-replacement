@@ -1,0 +1,32 @@
+From dfd8529cd85117446dae1f02233f241149ec0cab Mon Sep 17 00:00:00 2001
+From: Adrian Alonso <aalonso@freescale.com>
+Date: Wed, 9 Nov 2011 21:46:01 -0600
+Subject: [PATCH] parse: remove duplicated member label_statement
+
+* Remove duplicated menber label_statement
+* Rework originale patch from Ltib mailing list by
+  Aaron Wegner.
+
+Signed-off-by: Adrian Alonso <aalonso@freescale.com>
+---
+ parse.h |    4 ----
+ 1 files changed, 0 insertions(+), 4 deletions(-)
+
+diff --git a/parse.h b/parse.h
+index 609910f..f3b61a1 100644
+--- a/parse.h
++++ b/parse.h
+@@ -35,10 +35,6 @@ struct statement {
+ 		struct /* declaration */ {
+ 			struct symbol_list *declaration;
+ 		};
+-		struct /* label_arg */ {
+-			struct symbol *label;
+-			struct statement *label_statement;
+-		};
+ 		struct {
+ 			struct expression *expression;
+ 			struct expression *context;
+-- 
+1.7.7
+

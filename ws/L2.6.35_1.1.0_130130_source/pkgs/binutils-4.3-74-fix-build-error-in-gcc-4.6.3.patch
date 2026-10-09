@@ -1,0 +1,343 @@
+diff -urN binutils-2.18-bak2/bfd/cpu-arm.c binutils-2.18-bak/bfd/cpu-arm.c
+--- binutils-2.18-bak2/bfd/cpu-arm.c	2012-03-13 16:53:02.000000000 +0800
++++ binutils-2.18-bak/bfd/cpu-arm.c	2012-03-13 17:06:32.000000000 +0800
+@@ -228,7 +228,7 @@
+ {
+   unsigned long namesz;
+   unsigned long descsz;
+-  unsigned long type;
++  unsigned long type __attribute__ ((unused));
+   char *        descr;
+ 
+   if (buffer_size < offsetof (arm_Note, name))
+diff -urN binutils-2.18-bak2/bfd/elf32-arm.c binutils-2.18-bak/bfd/elf32-arm.c
+--- binutils-2.18-bak2/bfd/elf32-arm.c	2012-03-13 16:53:02.000000000 +0800
++++ binutils-2.18-bak/bfd/elf32-arm.c	2012-03-13 17:05:57.000000000 +0800
+@@ -3010,7 +3010,7 @@
+   struct bfd_link_hash_entry *bh;
+   bfd_vma val;
+   struct _arm_elf_section_data *sec_data;
+-  int errcount;
++  int errcount __attribute__ ((unused));
+   elf32_cpu_erratum_list *newerr;
+   const char *veneer_section_name;
+   const char *veneer_entry_name;
+@@ -4023,7 +4023,7 @@
+                 {
+                   elf32_cpu_erratum_list *newerr
+                     = bfd_zmalloc (sizeof (elf32_cpu_erratum_list));
+-                  int errcount;
++                  int errcount __attribute__ ((unused));
+ 
+                   errcount = ++(elf32_arm_section_data (sec)->erratumcount);
+ 
+@@ -4289,7 +4289,7 @@
+ 		      if ((insn & 0x0fffffff) != 0x01a00000)
+ 		        {
+ 			  elf32_cpu_erratum_list *newerr;
+-			  int errcount;
++			  int errcount __attribute__ ((unused));
+ 			  
+ 			  /* Lose if Rd, Rn or Rm is PC.  Don't bother
+ 			     checking Rs.  */
+@@ -4982,8 +4982,8 @@
+   unsigned long                 r_symndx;
+   bfd_byte *                    hit_data = contents + rel->r_offset;
+   bfd *                         dynobj = NULL;
+-  Elf_Internal_Shdr *           symtab_hdr;
+-  struct elf_link_hash_entry ** sym_hashes;
++  Elf_Internal_Shdr *           symtab_hdr __attribute__((unused));
++  struct elf_link_hash_entry ** sym_hashes __attribute__((unused));
+   bfd_vma *                     local_got_offsets;
+   asection *                    sgot = NULL;
+   asection *                    splt = NULL;
+@@ -6939,7 +6939,7 @@
+ 	}
+       else
+ 	{
+-	  bfd_boolean warned;
++	  bfd_boolean warned __attribute__((unused));
+ 
+ 	  RELOC_FOR_GLOBAL_SYMBOL (info, input_bfd, input_section, rel,
+ 				   r_symndx, symtab_hdr, sym_hashes,
+@@ -8117,7 +8117,7 @@
+   const Elf_Internal_Rela *rel_end;
+   bfd *dynobj;
+   asection *sreloc;
+-  bfd_vma *local_got_offsets;
++  bfd_vma *local_got_offsets __attribute__((unused));
+   struct elf32_arm_link_hash_table *htab;
+   bfd_boolean needs_plt;
+ 
+@@ -10210,7 +10210,7 @@
+ 			     bfd_vma offset)
+ {
+   static const char *names[3] = {"$a", "$t", "$d"};
+-  struct elf32_arm_link_hash_table *htab;
++  struct elf32_arm_link_hash_table *htab __attribute__((unused));
+   Elf_Internal_Sym sym;
+ 
+   htab = elf32_arm_hash_table (osi->info);
+diff -urN binutils-2.18-bak2/bfd/elf.c binutils-2.18-bak/bfd/elf.c
+--- binutils-2.18-bak2/bfd/elf.c	2012-03-13 16:53:02.000000000 +0800
++++ binutils-2.18-bak/bfd/elf.c	2012-03-13 17:06:09.000000000 +0800
+@@ -4850,11 +4850,12 @@
+ prep_headers (bfd *abfd)
+ {
+   Elf_Internal_Ehdr *i_ehdrp;	/* Elf file header, internal form */
+-  Elf_Internal_Phdr *i_phdrp = 0; /* Program header table, internal form */
+-  Elf_Internal_Shdr **i_shdrp;	/* Section header table, internal form */
++  Elf_Internal_Phdr *i_phdrp __attribute__ ((unused)); /* Program header table, internal form */
++  Elf_Internal_Shdr **i_shdrp __attribute__ ((unused));	/* Section header table, internal form */
+   struct elf_strtab_hash *shstrtab;
+   const struct elf_backend_data *bed = get_elf_backend_data (abfd);
+ 
++  i_phdrp = NULL;
+   i_ehdrp = elf_elfheader (abfd);
+   i_shdrp = elf_elfsections (abfd);
+ 
+@@ -4968,7 +4969,7 @@
+ _bfd_elf_write_object_contents (bfd *abfd)
+ {
+   const struct elf_backend_data *bed = get_elf_backend_data (abfd);
+-  Elf_Internal_Ehdr *i_ehdrp;
++  Elf_Internal_Ehdr *i_ehdrp __attribute__ ((unused));
+   Elf_Internal_Shdr **i_shdrp;
+   bfd_boolean failed;
+   unsigned int count, num_sec;
+diff -urN binutils-2.18-bak2/bfd/elf-eh-frame.c binutils-2.18-bak/bfd/elf-eh-frame.c
+--- binutils-2.18-bak2/bfd/elf-eh-frame.c	2012-03-13 16:53:02.000000000 +0800
++++ binutils-2.18-bak/bfd/elf-eh-frame.c	2012-03-13 17:06:18.000000000 +0800
+@@ -1217,7 +1217,7 @@
+ {
+   struct eh_frame_sec_info *sec_info;
+   struct elf_link_hash_table *htab;
+-  struct eh_frame_hdr_info *hdr_info;
++  struct eh_frame_hdr_info *hdr_info __attribute__ ((unused));
+   unsigned int lo, hi, mid;
+ 
+   if (sec->sec_info_type != ELF_INFO_TYPE_EH_FRAME)
+diff -urN binutils-2.18-bak2/binutils/dwarf.c binutils-2.18-bak/binutils/dwarf.c
+--- binutils-2.18-bak2/binutils/dwarf.c	2012-03-13 16:53:03.000000000 +0800
++++ binutils-2.18-bak/binutils/dwarf.c	2012-03-13 17:07:25.000000000 +0800
+@@ -1805,7 +1805,7 @@
+     {
+       DWARF2_Internal_CompUnit compunit;
+       unsigned char *hdrptr;
+-      unsigned char *cu_abbrev_offset_ptr;
++      unsigned char *cu_abbrev_offset_ptr __attribute__ ((unused));
+       unsigned char *tags;
+       int level;
+       unsigned long cu_offset;
+@@ -2956,7 +2956,7 @@
+ 		      void *file ATTRIBUTE_UNUSED)
+ {
+   unsigned char *start = section->start;
+-  unsigned char *section_end;
++  unsigned char *section_end __attribute__ ((unused));
+   unsigned long bytes;
+   unsigned char *section_begin = start;
+   unsigned int num_range_list = 0;
+@@ -3044,7 +3044,7 @@
+       dwarf_vma end;
+       unsigned long offset;
+       unsigned int pointer_size;
+-      unsigned long base_address;
++      unsigned long base_address __attribute__ ((unused));
+ 
+       pointer_size = debug_information [i].pointer_size;
+       
+diff -urN binutils-2.18-bak2/binutils/ieee.c binutils-2.18-bak/binutils/ieee.c
+--- binutils-2.18-bak2/binutils/ieee.c	2012-03-13 16:53:03.000000000 +0800
++++ binutils-2.18-bak/binutils/ieee.c	2012-03-13 17:08:30.000000000 +0800
+@@ -4815,7 +4815,7 @@
+   const char *backslash;
+ #endif
+   char *c, *s;
+-  unsigned int nindx;
++  unsigned int nindx __attribute__ ((unused));
+ 
+   if (info->filename != NULL)
+     {
+@@ -5680,7 +5680,8 @@
+ ieee_offset_type (void *p)
+ {
+   struct ieee_handle *info = (struct ieee_handle *) p;
+-  unsigned int targetindx, baseindx;
++  unsigned int targetindx __attribute__ ((unused));
++  unsigned int baseindx __attribute__ ((unused));
+ 
+   targetindx = ieee_pop_type (info);
+   baseindx = ieee_pop_type (info);
+diff -urN binutils-2.18-bak2/binutils/objdump.c binutils-2.18-bak/binutils/objdump.c
+--- binutils-2.18-bak2/binutils/objdump.c	2012-03-13 16:53:03.000000000 +0800
++++ binutils-2.18-bak/binutils/objdump.c	2012-03-13 17:07:37.000000000 +0800
+@@ -1321,7 +1321,7 @@
+   struct objdump_disasm_info *aux;
+   asection *section;
+   int octets_per_line;
+-  bfd_boolean done_dot;
++  bfd_boolean done_dot __attribute__ ((unused));
+   int skip_addr_chars;
+   bfd_vma addr_offset;
+   unsigned int opb = info->octets_per_byte;
+diff -urN binutils-2.18-bak2/binutils/rddbg.c binutils-2.18-bak/binutils/rddbg.c
+--- binutils-2.18-bak2/binutils/rddbg.c	2012-03-13 16:53:03.000000000 +0800
++++ binutils-2.18-bak/binutils/rddbg.c	2012-03-13 17:07:56.000000000 +0800
+@@ -163,7 +163,7 @@
+ 	    {
+ 	      unsigned int strx;
+ 	      int type;
+-	      int other;
++	      int other __attribute__ ((unused));
+ 	      int desc;
+ 	      bfd_vma value;
+ 
+diff -urN binutils-2.18-bak2/binutils/readelf.c binutils-2.18-bak/binutils/readelf.c
+--- binutils-2.18-bak2/binutils/readelf.c	2012-03-13 16:53:03.000000000 +0800
++++ binutils-2.18-bak/binutils/readelf.c	2012-03-13 17:08:42.000000000 +0800
+@@ -7893,7 +7893,7 @@
+ {
+   Elf_Internal_Shdr *relsec;
+   bfd_size_type num_bytes;
+-  bfd_vma addr;
++  bfd_vma addr __attribute__ ((unused));
+   char *data;
+   char *end;
+   char *start;
+diff -urN binutils-2.18-bak2/binutils/stabs.c binutils-2.18-bak/binutils/stabs.c
+--- binutils-2.18-bak2/binutils/stabs.c	2012-03-13 16:53:03.000000000 +0800
++++ binutils-2.18-bak/binutils/stabs.c	2012-03-13 17:08:14.000000000 +0800
+@@ -685,7 +685,7 @@
+   debug_type dtype;
+   bfd_boolean synonym;
+   bfd_boolean self_crossref;
+-  unsigned int lineno;
++  unsigned int lineno __attribute__ ((unused));
+   debug_type *slot;
+ 
+   p = strchr (string, ':');
+@@ -2006,7 +2006,7 @@
+ 			const char *tagname, const char **pp,
+ 			bfd_boolean structp, const int *typenums)
+ {
+-  const char *orig;
++  const char *orig __attribute__ ((unused));
+   bfd_vma size;
+   debug_baseclass *baseclasses;
+   debug_field *fields;
+@@ -4645,7 +4645,9 @@
+     case 'M':
+     case 'O':
+       {
+-	bfd_boolean memberp, constp, volatilep;
++	bfd_boolean volatilep __attribute__ ((unused));
++	bfd_boolean constp __attribute__ ((unused));
++	bfd_boolean memberp;
+ 	debug_type class_type = DEBUG_TYPE_NULL;
+ 	debug_type *args;
+ 	bfd_boolean varargs;
+@@ -4764,7 +4766,7 @@
+ 
+     case 'Q':
+       {
+-	const char *hold;
++	const char *hold __attribute__ ((unused));
+ 
+ 	hold = *pp;
+ 	if (! stab_demangle_qualified (minfo, pp, ptype))
+diff -urN binutils-2.18-bak2/gas/as.c binutils-2.18-bak/gas/as.c
+--- binutils-2.18-bak2/gas/as.c	2012-03-13 16:53:02.000000000 +0800
++++ binutils-2.18-bak/gas/as.c	2012-03-13 17:09:05.000000000 +0800
+@@ -1052,7 +1052,7 @@
+ {
+   segT s;
+   char *p;
+-  addressT addr;
++  addressT addr __attribute__ ((unused));
+   offsetT size;
+   const char *name;
+ 
+diff -urN binutils-2.18-bak2/gas/config/tc-arm.c binutils-2.18-bak/gas/config/tc-arm.c
+--- binutils-2.18-bak2/gas/config/tc-arm.c	2012-03-13 16:53:02.000000000 +0800
++++ binutils-2.18-bak/gas/config/tc-arm.c	2012-03-13 17:09:49.000000000 +0800
+@@ -796,7 +796,7 @@
+ my_get_expression (expressionS * ep, char ** str, int prefix_mode)
+ {
+   char * save_in;
+-  segT	 seg;
++  segT	 seg __attribute__ ((unused));
+ 
+   /* In unified syntax, all prefixes are optional.  */
+   if (unified_syntax)
+@@ -1790,11 +1790,13 @@
+   int lane = -1;
+   int leading_brace = 0;
+   enum arm_reg_type rtype = REG_TYPE_NDQ;
+-  int addregs = 1;
++  int addregs __attribute__ ((unused));
+   const char *const incr_error = "register stride must be 1 or 2";
+   const char *const type_error = "mismatched element/structure types in list";
+   struct neon_typed_alias firsttype;
+ 
++  addregs = 1;
++
+   if (skip_past_char (&ptr, '{') == SUCCESS)
+     leading_brace = 1;
+ 
+@@ -2114,7 +2116,8 @@
+   struct reg_entry mybasereg;
+   struct neon_type ntype;
+   struct neon_typed_alias typeinfo;
+-  char *namebuf, *nameend;
++  char *namebuf;
++  char *nameend __attribute__ ((unused));
+   int namelen;
+ 
+   typeinfo.defined = 0;
+diff -urN binutils-2.18-bak2/gas/listing.c binutils-2.18-bak/gas/listing.c
+--- binutils-2.18-bak2/gas/listing.c	2012-03-13 16:53:02.000000000 +0800
++++ binutils-2.18-bak/gas/listing.c	2012-03-13 17:09:20.000000000 +0800
+@@ -951,7 +951,7 @@
+ {
+   list_info_type *list = head;
+   file_info_type *current_hll_file = (file_info_type *) NULL;
+-  char *message;
++  char *message __attribute__ ((unused));
+   char *buffer;
+   char *p;
+   int show_listing = 1;
+diff -urN binutils-2.18-bak2/gas/read.c binutils-2.18-bak/gas/read.c
+--- binutils-2.18-bak2/gas/read.c	2012-03-13 16:53:02.000000000 +0800
++++ binutils-2.18-bak/gas/read.c	2012-03-13 17:09:29.000000000 +0800
+@@ -2563,7 +2563,8 @@
+ void
+ s_mri (int ignore ATTRIBUTE_UNUSED)
+ {
+-  int on, old_flag;
++  int on;
++  int old_flag __attribute__ ((unused));
+ 
+   on = get_absolute_expression ();
+   old_flag = flag_mri;
+@@ -4694,7 +4695,7 @@
+ sizeof_uleb128 (valueT value)
+ {
+   register int size = 0;
+-  register unsigned byte;
++  register unsigned byte __attribute__ ((unused));
+ 
+   do
+     {
+diff -urN binutils-2.18-bak2/ld/ldlang.c binutils-2.18-bak/ld/ldlang.c
+--- binutils-2.18-bak2/ld/ldlang.c	2012-03-13 16:53:03.000000000 +0800
++++ binutils-2.18-bak/ld/ldlang.c	2012-03-13 17:06:54.000000000 +0800
+@@ -2158,7 +2158,7 @@
+ 	   lang_input_statement_type *file,
+ 	   asection *section)
+ {
+-  const char *section_name;
++  const char *section_name __attribute__ ((unused));
+   lang_statement_union_type *l;
+ 
+   if (!wild->filenames_sorted
